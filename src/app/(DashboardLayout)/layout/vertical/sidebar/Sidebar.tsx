@@ -2,11 +2,11 @@ import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
-//import SidebarItems from "./SidebarItems";
+import SidebarItems from "./SidebarItems";
 import Logo from "../../shared/logo/Logo";
 import { useSelector, useDispatch } from "@/store/hooks";
 import {  hoverSidebar, toggleMobileSidebar } from "@/store/customizer/CustomizerSlice";
-//import Scrollbar from "@/app/components/custom-scroll/Scrollbar";
+import Scrollbar from "@/app/components/custom-scroll/Scrollbar";
 //import { Profile } from "./SidebarProfile/Profile";
 import { AppState } from "@/store/store";
 
@@ -76,7 +76,12 @@ const Sidebar = () => {
               <Box px={3}>
                 <Logo />
               </Box>
-              <div>메뉴1</div>
+              <Scrollbar sx={{ height: "calc(100% - 190px)" }}>
+                {/* ------------------------------------------- */}
+                {/* Sidebar Items */}
+                {/* ------------------------------------------- */}
+                <SidebarItems />
+              </Scrollbar>
             </Box>
           </Drawer>
         </Box>
