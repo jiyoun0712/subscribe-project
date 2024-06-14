@@ -26,7 +26,7 @@ const Logo = () => {
           />
         ) : (
           <Image
-            src={"https://image.godpeople.com/common/ci/ci_godpeople_cc_dark.svg"}
+            src={"https://image.godpeople.com/common/ci/ci_godpeople_cc.svg"}
             alt="logo"
             height={customizer.TopbarHeight}
             width={174}
@@ -49,7 +49,7 @@ const Logo = () => {
         />
       ) : (
         <Image
-          src="https://image.godpeople.com/common/ci/ci_godpeople_cc_dark.svg"
+          src="https://image.godpeople.com/common/ci/ci_godpeople_cc.svg"
           alt="logo"
           height={customizer.TopbarHeight}
           width={174}

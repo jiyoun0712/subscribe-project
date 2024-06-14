@@ -146,12 +146,6 @@ const Menuitems: MenuitemsType[] = [
   },
   {
     id: uniqueId(),
-    title: "Calendar",
-    icon: IconCalendar,
-    href: "/apps/calendar",
-  },
-  {
-    id: uniqueId(),
     title: "Email",
     icon: IconMail,
     href: "/apps/email",
@@ -161,7 +155,7 @@ const Menuitems: MenuitemsType[] = [
   },
   {
     id: uniqueId(),
-    title: "Tickets",
+    title: "0123,45qweqwertyg 노토산스 ",
     icon: IconTicket,
     href: "/apps/tickets",
   },

@@ -4,6 +4,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 import CustomizerReducer from "./customizer/CustomizerSlice";
+import BlogReducer from "./apps/blog/BlogSlice";
 
 const persistConfig = {
   key: "root",
@@ -21,7 +22,7 @@ export const store = configureStore({
     //   contactsReducer: ContactsReducer,
     //   ticketReducer: TicketReducer,
     //   userpostsReducer: UserProfileReducer,
-    //   blogReducer: BlogReducer,
+       blogReducer: BlogReducer,
     },
     devTools: process.env.NODE_ENV !== "production",
     middleware: (getDefaultMiddleware) =>
@@ -37,7 +38,7 @@ export const store = configureStore({
     // contactsReducer: ContactsReducer,
     // ticketReducer: TicketReducer,
     // userpostsReducer: UserProfileReducer,
-    // blogReducer: BlogReducer,
+     blogReducer: BlogReducer,
   });
 export const persistor = persistStore(store);
 export type RootState = ReturnType<typeof store.getState>;

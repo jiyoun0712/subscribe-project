@@ -1,0 +1,17 @@
+@font-face {
+    font-family: "Noto Sans KR";
+    src: url('https://fonts.gstatic.com/s/notosanskr/v19/Pby6FmXiEBPT4ITbgNA5CgmOsn7pwGaVwg.woff2') format('woff2'),
+         url('https://fonts.gstatic.com/s/notosanskr/v19/Pby6FmXiEBPT4ITbgNA5CgmOsn7pwGaVwg.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    unicode-range:  U+AC00-D7A3; /* 숫자와 영어에만 적용 */
+  }
+  
+  @font-face {
+    font-family: "Noto Sans KR";
+    src: url('https://fonts.gstatic.com/s/notosanskr/v19/Pby6FmXiEBPT4ITbgNA5CgmOsn7pwGaVwg.woff2') format('woff2'),
+         url('https://fonts.gstatic.com/s/notosanskr/v19/Pby6FmXiEBPT4ITbgNA5CgmOsn7pwGaVwg.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    unicode-range: U+AC00-D7A3; /* 한글에만 적용 */
+  }

@@ -1,4 +1,5 @@
 import { Plus_Jakarta_Sans } from "next/font/google";
+import { Noto_Sans_KR } from 'next/font/google';
 
 export const plus = Plus_Jakarta_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -7,12 +8,20 @@ export const plus = Plus_Jakarta_Sans({
   fallback: ["Helvetica", "Arial", "sans-serif"],
 });
 
+
+export const notoSansKR = Noto_Sans_KR({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+});
+
+
 const typography: any = {
-  fontFamily: plus.style.fontFamily,
+  fontFamily: notoSansKR.style.fontFamily,
   h1: {
     fontWeight: 600,
     fontSize: '2.25rem',
     lineHeight: '2.75rem',
+    
   },
   h2: {
     fontWeight: 600,

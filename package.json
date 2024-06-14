@@ -15,6 +15,10 @@
     "@mui/material": "^5.15.19",
     "@reduxjs/toolkit": "^2.2.5",
     "@tabler/icons-react": "^3.5.0",
+    "axios": "^1.7.2",
+    "axios-mock-adapter": "^1.22.0",
+    "chance": "^1.1.11",
+    "date-fns": "^3.6.0",
     "lodash": "^4.17.21",
     "next": "14.2.3",
     "react": "^18",
@@ -25,6 +29,7 @@
     "simplebar-react": "^3.2.5"
   },
   "devDependencies": {
+    "@types/chance": "^1.1.6",
     "@types/lodash": "^4.17.5",
     "@types/node": "^20",
     "@types/react": "^18",

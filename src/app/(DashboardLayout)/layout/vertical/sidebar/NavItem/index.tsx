@@ -1,4 +1,5 @@
 import React from "react";
+
 import Link from "next/link";
 
 // mui imports
@@ -14,6 +15,8 @@ import { styled, useTheme } from '@mui/material/styles';
 import { useSelector } from "@/store/hooks";
 import { useTranslation } from "react-i18next";
 import { AppState } from "@/store/store";
+
+
 
 type NavGroup = {
   [x: string]: any;
@@ -117,7 +120,7 @@ export default function NavItem({
             {itemIcon}
           </ListItemIcon>
           <ListItemText>
-            {hideMenu ? "" : <>{t(`${item?.title}`)}</>}
+            {hideMenu ? "" : t(`${item?.title}`)}
             <br />
             {item?.subtitle ? (
               <Typography variant="caption">
