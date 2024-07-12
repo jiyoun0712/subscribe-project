@@ -78,6 +78,7 @@ export default function RootLayout({
           {/* PageContent */}
           {/* ------------------------------------------- */}
 
+            
           <Box sx={{ minHeight: "calc(100vh - 170px)" }}>
             {/* <Outlet /> */}
             {children}

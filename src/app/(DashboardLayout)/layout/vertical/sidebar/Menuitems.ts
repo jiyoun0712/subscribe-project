@@ -78,37 +78,57 @@ const Menuitems: MenuitemsType[] = [
     href: "/",
   },
   {
+    id: uniqueId(),
+    title: "Shorts",
+    icon: IconAperture,
+    href: "/shorts",
+  },
+  {
+    id: uniqueId(),
+    title: "구독",
+    icon: IconAperture,
+    href: "/subscript",
+  },
+  {
     navlabel: true,
-    subheader: "시리즈",
+    subheader: "내 기도",
   },
 
   {
     id: uniqueId(),
-    title: "시리즈로 보기",
+    title: "최근 기도",
     icon: IconUserPlus,
-    href: "/dashboards/ecommerce",
+    href: "/my/new",
     chip: "New",
     chipColor: "secondary",
   },
   {
     id: uniqueId(),
-    title: "아티클만 보기",
+    title: "응답된 기도",
     icon: IconAlertCircle,
-    href: "/dashboards/ecommerce",
+    href: "/my/confirm",
   },
   {
     id: uniqueId(),
-    title: "비디오만 보기",
-    icon: IconShoppingCart,
-    href: "/dashboards/ecommerce",
+    title: "기도 목록",
+    icon: IconNotes,
+    href: "/my/prayerlist",
   },
   {
     navlabel: true,
-    subheader: "세미나",
+    subheader: "구독",
   },
   {
     id: uniqueId(),
-    title: "Contacts",
+    title: "갓피플교회",
+    icon: IconPackage,
+    chip: "2",
+    chipColor: "secondary",
+    href: "/apps/contacts",
+  },
+  {
+    id: uniqueId(),
+    title: "믿음의교회",
     icon: IconPackage,
     chip: "2",
     chipColor: "secondary",
@@ -116,7 +136,7 @@ const Menuitems: MenuitemsType[] = [
   },
   {
     navlabel: true,
-    subheader: "톡",
+    subheader: "더보기",
   },
   {
     id: uniqueId(),
@@ -134,15 +154,9 @@ const Menuitems: MenuitemsType[] = [
         id: uniqueId(),
         title: "Detail",
         icon: IconPoint,
-        href: "/apps/blog/detail/streaming-video-way-before-it-was-cool-go-dark-tomorrow",
+        href: "/apps/blog/detail/10",
       },
     ],
-  },
-  {
-    id: uniqueId(),
-    title: "Notes",
-    icon: IconNotes,
-    href: "/apps/notes",
   },
   {
     id: uniqueId(),
@@ -155,9 +169,9 @@ const Menuitems: MenuitemsType[] = [
   },
   {
     id: uniqueId(),
-    title: "0123,45qweqwertyg 노토산스 ",
-    icon: IconTicket,
-    href: "/apps/tickets",
+    title: "설정",
+    icon: IconSettings,
+    href: "/apps/settings",
   },
  
 ];

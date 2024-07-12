@@ -6,7 +6,7 @@ import './blog/blogData';
 //import './ticket/TicketData';
 //import './eCommerce/ProductsData';
 //import './email/EmailData';
-//import './userprofile/PostData';
+import './userprofile/PostData';
 //import './userprofile/UsersData';
 
 mock.onAny().passThrough();

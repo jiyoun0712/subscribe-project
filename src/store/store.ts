@@ -5,6 +5,8 @@ import storage from "redux-persist/lib/storage";
 
 import CustomizerReducer from "./customizer/CustomizerSlice";
 import BlogReducer from "./apps/blog/BlogSlice";
+import UserProfileReducer from "./apps/userProfile/UserProfileSlice";
+
 
 const persistConfig = {
   key: "root",
@@ -21,7 +23,7 @@ export const store = configureStore({
     //   notesReducer: NotesReducer,
     //   contactsReducer: ContactsReducer,
     //   ticketReducer: TicketReducer,
-    //   userpostsReducer: UserProfileReducer,
+       userpostsReducer: UserProfileReducer,
        blogReducer: BlogReducer,
     },
     devTools: process.env.NODE_ENV !== "production",
@@ -37,7 +39,7 @@ export const store = configureStore({
     // notesReducer: NotesReducer,
     // contactsReducer: ContactsReducer,
     // ticketReducer: TicketReducer,
-    // userpostsReducer: UserProfileReducer,
+     userpostsReducer: UserProfileReducer,
      blogReducer: BlogReducer,
   });
 export const persistor = persistStore(store);

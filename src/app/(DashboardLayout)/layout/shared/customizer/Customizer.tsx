@@ -242,6 +242,7 @@ const Customizer: FC = () => {
             {/* ------------------------------------------- */}
             {/* ------------ Layout Horizontal / Vertical ------------- */}
             {/* ------------------------------------------- */}
+            {/*
             <Typography variant="h6" gutterBottom>
               Layout Type
             </Typography>
@@ -272,9 +273,11 @@ const Customizer: FC = () => {
               </StyledBox>
             </Stack>
             <Box pt={4} />
+            */}
             {/* ------------------------------------------- */}
             {/* ------------ Layout Boxed / Full ------------- */}
             {/* ------------------------------------------- */}
+            {/*}
             <Typography variant="h6" gutterBottom>
               Container Option
             </Typography>
@@ -303,6 +306,9 @@ const Customizer: FC = () => {
               </StyledBox>
             </Stack>
             <Box pt={4} />
+            */}
+
+
             {/* ------------------------------------------- */}
             {/* ------------ Sidebar Color setting ------------- */}
             {/* ------------------------------------------- */}
@@ -310,6 +316,9 @@ const Customizer: FC = () => {
             {/* ------------------------------------------- */}
             {/* ------------ Theme Color setting ------------- */}
             {/* ------------------------------------------- */}
+            
+            
+            {/*}
             {customizer.isHorizontal ? (
               ""
             ) : (
@@ -342,6 +351,10 @@ const Customizer: FC = () => {
               </>
             )}
             <Box pt={4} />
+            */}
+
+
+            {/*}
             <Typography variant="h6" gutterBottom>
               Card With
             </Typography>
@@ -368,6 +381,9 @@ const Customizer: FC = () => {
               </StyledBox>
             </Stack>
             <Box pt={4} />
+            */}
+
+
             {/* ------------------------------------------- */}
             {/* ------------ Theme Color setting ------------- */}
             {/* ------------------------------------------- */}
