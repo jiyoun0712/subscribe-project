@@ -1,31 +1,23 @@
-'use client'
+"use client"
 
 import Grid from '@mui/material/Grid'
-import { useEffect, useState } from 'react';
 import PageContainer from '@/app/components/container/PageContainer';
 
 import Post from '@/app/components/apps/feed/prayerlist/FeedListing';
 
-export default function Dashboard (){
-
-  const [isLoading, setLoading] = useState(true);
-  useEffect(() => {
-    setLoading(false);
-  }, []);
-
+const PrayerList = () => {
   return (
-    <PageContainer title="Dashboard" description="this is Dashboard">
-      <Grid container spacing={2}>
+    <PageContainer title="Profile" description="this is Profile">
+
+      <Grid container spacing={3}>
         
         {/* Posts Card */}
         <Grid item sm={12} lg={8} xs={12}>
           <Post />
         </Grid>
-
-        
       </Grid>
-
     </PageContainer>
-  )
-}
+  );
+};
 
+export default PrayerList;

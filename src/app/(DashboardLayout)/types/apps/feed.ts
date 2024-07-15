@@ -36,19 +36,26 @@ export type ProfileType = {
     data?: CommentDataType;
   };
   
+  export type PostType = {
+    id?: any;
+    type: string;
+    
+    profile: ProfileType;
+    data: PostDataType;
+  };
+  
+  
   export type PostDataType = {
     id?: string | number;
+    
+    summary: string;
+    createdAt?: Date;
+    view?: number;
+    share?: number;
     content: string;
     images: PostImageType[];
     video?: string;
     likes: Likes;
     comments?: Comment[];
-  };
-  
-  export type PostType = {
-    id?: any;
-    type: string;
-    profile: ProfileType;
-    data: PostDataType;
   };
   

@@ -6,6 +6,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Divider from '@mui/material/Divider';
 import Fab from '@mui/material/Fab';
 import Grid from '@mui/material/Grid';
+
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
@@ -13,11 +14,14 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { IconCircle, IconMessage2, IconShare, IconThumbUp } from '@tabler/icons-react';
 import uniqueId from 'lodash/uniqueId';
+import Link from "next/link";
 import { useDispatch, useSelector } from'@/store/hooks';
-import { likePosts, addComment } from '@/store/apps/userProfile/UserProfileSlice';
+import { likePosts, addComment } from '@/store/apps/feed/FeedSlice';
 //import PostComments from './PostComments';
 import BlankCard from '../../../shared/BlankCard';
-import { Comment as CommentType, PostType } from '../../../../(DashboardLayout)/types/apps/userProfile';
+import DetailDialog from './DetailDialog';
+
+import { Comment as CommentType, PostType } from '../../../../(DashboardLayout)/types/apps/feed';
 
 interface Props {
   post: PostType;
@@ -70,7 +74,7 @@ const PostItem = ({ post }: Props) => {
       
       
       {/**Post Content**/}
-      <Box py={2}>{post?.data.content}</Box>
+      <Box py={2}>{post?.data.summary}</Box>
 
 
       {/** Type A :: 개인 **/}
@@ -80,14 +84,18 @@ const PostItem = ({ post }: Props) => {
             {post?.data.images.map((photo) => {
               return (
                 <Grid item sm={12} lg={photo.featured ? 12 : 6} key={photo.img}>
-                  
-                  <CardMedia
-                    component="img"
-                    sx={{ borderRadius: customizer.borderRadius / 4, height: 360 }}
-                    image={photo.img}
-                    alt="cover"
-                    width={'100%'}
-                  />
+                  <Typography
+                      component={Link}
+                      href={`/apps/feed/detail/${post.id}`}
+                    >
+                    <CardMedia
+                      component="img"
+                      sx={{ borderRadius: customizer.borderRadius / 4, height: 360 }}
+                      image={photo.img}
+                      alt="cover"
+                      width={'100%'}
+                    />
+                  </Typography>
                 </Grid>
               );
             })}
@@ -104,7 +112,10 @@ const PostItem = ({ post }: Props) => {
             {post?.data.images.map((photo) => {
               return (
                 <Grid item sm={12} lg={photo.featured ? 12 : 6} key={photo.img}>
-                  
+                  <Typography
+                      component={Link}
+                      href={`/apps/feed/detail/${post.id}`}
+                    >
                   <CardMedia
                     component="img"
                     sx={{ borderRadius: customizer.borderRadius / 4, height: 360 }}
@@ -112,6 +123,7 @@ const PostItem = ({ post }: Props) => {
                     alt="cover"
                     width={'100%'}
                   />
+                  </Typography>
                 </Grid>
               );
             })}
@@ -137,60 +149,14 @@ const PostItem = ({ post }: Props) => {
       ) : (
         ''
       )}
-      {/**Post Like Comment Share buttons**/}
-      {/*
-      <Box>
-        <Stack direction="row" gap={1} alignItems="center">
-          <Tooltip title="Like" placement="top">
-            <Fab
-              size="small"
-              color={
-                post?.data && post?.data.likes && post?.data.likes.like ? 'primary' : 'inherit'
-              }
-              onClick={() => handleLike(post?.id)}
-            >
-              <IconThumbUp size="16" />
-            </Fab>
-          </Tooltip>
-          <Typography variant="body1" fontWeight={600}>
-            {post?.data && post?.data.likes && post?.data.likes.value}
-          </Typography>
-          <Tooltip title="Comment" placement="top">
-            <Fab sx={{ ml: 2 }} size="small" color="secondary">
-              <IconMessage2 size="16" />
-            </Fab>
-          </Tooltip>
-          <Typography variant="body1" fontWeight={600}>
-            {post?.data.comments ? post?.data.comments.length : 0}
-          </Typography>
-          <Tooltip title="Share" placement="top">
-            <IconButton sx={{ ml: 'auto' }}>
-              <IconShare size="16" />
-            </IconButton>
-          </Tooltip>
-        </Stack>
-      </Box>
-        */}
+     
 
-      {/**Comments if any**/}
-      {/*
-      <Box>
-        {post?.data.comments ? (
-          <>
-            {post?.data.comments.map((comment) => {
-              return <PostComments comment={comment} key={comment.id} post={post} />;
-            })}
-          </>
-        ) : (
-          ''
-        )}
-      </Box>
-      */}
-
-   
+   {/*}
     <Stack direction={'row'} gap={2} alignItems="center" justifyContent="flex-end">
         <Button size="small">더보기</Button>
     </Stack>
+    */}
+      <DetailDialog id={post.id} />
 
     </Box>
   </BlankCard>
