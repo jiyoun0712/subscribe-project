@@ -4,7 +4,7 @@ const nextConfig = {
     images: {
         domains: ['cnts-image.godpeople.com'],
       },
-
+    reactStrictMode: false,
 
 };
 
