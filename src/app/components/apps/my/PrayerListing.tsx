@@ -27,7 +27,7 @@ import {
 //import Form from '@/app/components/apps/my/Form';
 //import ToDosList from '@/app/components/apps/my/ToDosList';
 
-import ToDo from '@/app/components/apps/my/ToDo'; // ToDo 컴포넌트 임포트
+import PrayerItem from '@/app/components/apps/my/PrayerItem'; // ToDo 컴포넌트 임포트
 
 const List = styled.ul`
   list-style-type: none;
@@ -166,7 +166,7 @@ const PrayerListing: React.FC = () => {
                     </TableHead>
                     <TableBody>          
                     {toDos.map((toDo, index) => (
-                      <ToDo key={index} index={index} id={`item-${toDo.id}`} status={toDo.status} title={toDo.title} subtitle={toDo.subtitle} avatar={toDo.avatar} users={toDo.users} teams={toDo.teams} editing={editing} />
+                      <PrayerItem key={index} index={index} id={`item-${toDo.id}`} status={toDo.status} title={toDo.title} subtitle={toDo.subtitle} avatar={toDo.avatar} users={toDo.users} teams={toDo.teams} editing={editing} />
                     ))}
                     {provided.placeholder}
                     </TableBody>

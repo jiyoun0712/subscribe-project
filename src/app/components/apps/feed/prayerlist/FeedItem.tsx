@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -8,11 +9,15 @@ import Fab from '@mui/material/Fab';
 import Grid from '@mui/material/Grid';
 
 import IconButton from '@mui/material/IconButton';
+import IconFavoriteBorder from '@mui/icons-material/FavoriteBorder';
+import IconFavorite from '@mui/icons-material/Favorite';
+
+
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { IconCircle, IconMessage2, IconShare, IconThumbUp } from '@tabler/icons-react';
+import { IconCircle, IconFavicon, IconMessage2, IconShare, IconThumbUp } from '@tabler/icons-react';
 import uniqueId from 'lodash/uniqueId';
 import Link from "next/link";
 import { useDispatch, useSelector } from'@/store/hooks';
@@ -33,6 +38,19 @@ const PostItem = ({ post }: Props) => {
   const handleLike = async (postId: number) => {
     dispatch(likePosts(postId));
   };
+
+  const iconVariants = {
+    initial: { rotate: 0, scale: 1 },
+    animate: post?.data && post?.data.likes && post?.data.likes.like
+    ? {
+      rotate: [-30, 0, 360],
+      scale: [1, 1, 0.5, 1],
+      transition: { duration:0.1, ease: 'easeInOut', type: 'spring', stiffness: 300, damping: 20, } 
+    } : {
+      rotate: 360, scale: 1, transition: { duration: 0.8, ease: "easeInOut" }
+    },
+  };
+
   const [comText, setComText] = useState<any>('');
 
   const onSubmit = async (id: number, comment: CommentType) => {
@@ -156,7 +174,117 @@ const PostItem = ({ post }: Props) => {
         <Button size="small">더보기</Button>
     </Stack>
     */}
-      <DetailDialog id={post.id} />
+
+      {/* Post Like Comment Share Buttons */}
+      <Box>
+        <Stack direction="row" gap={1} alignItems="center">
+
+          {/* 1번째 아이콘 */}
+          <Tooltip title="Like" placement="top">
+            <Fab
+                size="small"
+                color={
+                  post?.data && post?.data.likes && post?.data.likes.like ? 'primary' : 'inherit'
+                }
+                onClick={() => handleLike(post?.id)}
+              >
+              <IconThumbUp size="16" />
+            </Fab>
+          </Tooltip>
+          <Typography variant="body1" fontweight={600}>
+            {post?.data && post?.data.likes && post?.data.likes.value}
+          </Typography>
+
+
+          {/* 2번째 아이콘 */}
+          <IconButton
+            arial-label="like"
+            color={
+              post?.data && post?.data.likes && post?.data.likes.like ? 'red' : 'inherit'
+            }
+            onClick={() => handleLike(post?.id)}>
+              <IconFavoriteBorder />
+          </IconButton>
+          <Typography variant="body1" fontweight={600}>
+            {post?.data && post?.data.likes && post?.data.likes.value}
+          </Typography>
+
+          {/* 3번째 아이콘 */}
+          <motion.div 
+            animate={post?.data && post?.data.likes && post?.data.likes.like ? { scale: [ 1.5, 1 ]} : { scale: 1 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+          >
+            <IconButton 
+              arial-label="like"
+              color={
+                post?.data && post?.data.likes && post?.data.likes.like ? 'red' : 'inherit'
+              }
+              onClick={() => handleLike(post?.id)}>
+              <IconFavoriteBorder />
+            </IconButton>
+          </motion.div>
+          <Typography variant="body1" fontweight={600}>
+            {post?.data && post?.data.likes && post?.data.likes.value}
+          </Typography>
+
+
+          {/* 4번째 아이콘 */}
+          <motion.div 
+            animate={ post?.data && post?.data.likes && post?.data.likes.like ? { rotate: 360 } : {}}
+            transition={ post?.data && post?.data.likes && post?.data.likes.like ? { type: 'spring', bounce: 0.3, stiffness: 300, damping: 10 } : { rotate: 360, scale: 1, transition: { duration: 0.3, ease: "easeOut" }}}
+          >
+            <IconButton 
+              arial-label="like"
+              color={
+                post?.data && post?.data.likes && post?.data.likes.like ? 'red' : 'inherit'
+              }
+              onClick={() => handleLike(post?.id)}>
+                { post?.data && post?.data.likes && post?.data.likes.like ? (
+                  <IconFavoriteBorder />
+                ):(
+                  <IconFavoriteBorder />
+                )}
+              
+            </IconButton>
+          </motion.div>
+          <Typography variant="body1" fontweight={600}>
+            {post?.data && post?.data.likes && post?.data.likes.value}
+          </Typography>
+
+
+          {/* 5번째 아이콘 */}
+          <motion.div 
+            initial="initial"
+            animate="animate"
+            variants={iconVariants}
+          >
+            <IconButton 
+              arial-label="like"
+              onClick={() => handleLike(post?.id)}>
+                { post?.data && post?.data.likes && post?.data.likes.like ? (
+                  <IconFavorite sx={{ color: '#ff0000' }} />
+                ):(
+                  <IconFavoriteBorder />
+                )}
+            </IconButton>
+          </motion.div>
+          <Typography variant="body1" fontweight={600}>
+            {post?.data && post?.data.likes && post?.data.likes.value}
+          </Typography>
+
+
+
+        </Stack>
+      </Box>
+      
+
+
+      <Box>
+        <Stack direction="row" gap={1} alignItems="right" justifyContent="end">
+          <DetailDialog id={post.id} />
+        </Stack>
+      </Box>
+
 
     </Box>
   </BlankCard>

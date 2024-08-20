@@ -76,8 +76,7 @@ export const addComment = (postId: number, comment: any[]) => async (dispatch: A
   }
 };
 
-export const addReply =
-  (postId: number, commentId: any[], reply: any[]) => async (dispatch: AppDispatch) => {
+export const addReply = (postId: number, commentId: any[], reply: any[]) => async (dispatch: AppDispatch) => {
     try {
       const response = await axios.post('/api/data/posts/replies/add', {
         postId,

@@ -1,5 +1,6 @@
 
 html { overflow-y: scroll; }
 body {
-    font-family: 'Noto Sans KR', sans-serif;
+    /*font-family: 'Noto Sans KR', sans-serif;*/
+    font-family: sans-serif;
   }

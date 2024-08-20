@@ -58,6 +58,11 @@ const baselightTheme = {
         hoverOpacity: 0.02,
         hover: '#f6f9fc',
       },
+      red: {
+        main: '#FF5555',
+        light: '#ECF2FF',
+        dark: '#4570EA',
+      },
       divider: '#e5eaef',
     },
   };
@@ -120,6 +125,11 @@ const baselightTheme = {
         disabledBackground: 'rgba(73,82,88,0.12)',
         hoverOpacity: 0.02,
         hover: '#333F55',
+      },
+      red: {
+        main: '#FF5555',
+        light: '#ECF2FF',
+        dark: '#4570EA',
       },
       divider: '#333F55',
       background: {
