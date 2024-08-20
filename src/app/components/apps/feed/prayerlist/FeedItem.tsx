@@ -191,7 +191,7 @@ const PostItem = ({ post }: Props) => {
               <IconThumbUp size="16" />
             </Fab>
           </Tooltip>
-          <Typography variant="body1" fontweight={600}>
+          <Typography variant="body1" fontWeight={600}>
             {post?.data && post?.data.likes && post?.data.likes.value}
           </Typography>
 
@@ -205,7 +205,7 @@ const PostItem = ({ post }: Props) => {
             onClick={() => handleLike(post?.id)}>
               <IconFavoriteBorder />
           </IconButton>
-          <Typography variant="body1" fontweight={600}>
+          <Typography variant="body1" fontWeight={600}>
             {post?.data && post?.data.likes && post?.data.likes.value}
           </Typography>
 
@@ -223,7 +223,7 @@ const PostItem = ({ post }: Props) => {
               <IconFavoriteBorder />
             </IconButton>
           </motion.div>
-          <Typography variant="body1" fontweight={600}>
+          <Typography variant="body1" fontWeight={600}>
             {post?.data && post?.data.likes && post?.data.likes.value}
           </Typography>
 
@@ -247,7 +247,7 @@ const PostItem = ({ post }: Props) => {
               
             </IconButton>
           </motion.div>
-          <Typography variant="body1" fontweight={600}>
+          <Typography variant="body1" fontWeight={600}>
             {post?.data && post?.data.likes && post?.data.likes.value}
           </Typography>
 
@@ -268,7 +268,7 @@ const PostItem = ({ post }: Props) => {
                 )}
             </IconButton>
           </motion.div>
-          <Typography variant="body1" fontweight={600}>
+          <Typography variant="body1" fontWeight={600}>
             {post?.data && post?.data.likes && post?.data.likes.value}
           </Typography>
 
