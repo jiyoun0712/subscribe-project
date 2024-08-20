@@ -198,9 +198,9 @@ const PostItem = ({ post }: Props) => {
 
           {/* 2번째 아이콘 */}
           <IconButton
-            arial-label="like"
+            aria-label="like"
             color={
-              post?.data && post?.data.likes && post?.data.likes.like ? 'red' : 'inherit'
+              post?.data && post?.data.likes && post?.data.likes.like ? 'error' : 'inherit'
             }
             onClick={() => handleLike(post?.id)}>
               <IconFavoriteBorder />
@@ -215,9 +215,9 @@ const PostItem = ({ post }: Props) => {
             transition={{ duration: 0.3, ease: "easeOut" }}
           >
             <IconButton 
-              arial-label="like"
+              aria-label="like"
               color={
-                post?.data && post?.data.likes && post?.data.likes.like ? 'red' : 'inherit'
+                post?.data && post?.data.likes && post?.data.likes.like ? 'error' : 'inherit'
               }
               onClick={() => handleLike(post?.id)}>
               <IconFavoriteBorder />
@@ -234,9 +234,9 @@ const PostItem = ({ post }: Props) => {
             transition={ post?.data && post?.data.likes && post?.data.likes.like ? { type: 'spring', bounce: 0.3, stiffness: 300, damping: 10 } : { rotate: 360, scale: 1, transition: { duration: 0.3, ease: "easeOut" }}}
           >
             <IconButton 
-              arial-label="like"
+              aria-label="like"
               color={
-                post?.data && post?.data.likes && post?.data.likes.like ? 'red' : 'inherit'
+                post?.data && post?.data.likes && post?.data.likes.like ? 'error' : 'inherit'
               }
               onClick={() => handleLike(post?.id)}>
                 { post?.data && post?.data.likes && post?.data.likes.like ? (
@@ -259,7 +259,7 @@ const PostItem = ({ post }: Props) => {
             variants={iconVariants}
           >
             <IconButton 
-              arial-label="like"
+              aria-label="like"
               onClick={() => handleLike(post?.id)}>
                 { post?.data && post?.data.likes && post?.data.likes.like ? (
                   <IconFavorite sx={{ color: '#ff0000' }} />
