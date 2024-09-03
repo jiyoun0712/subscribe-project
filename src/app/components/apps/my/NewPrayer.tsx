@@ -133,12 +133,6 @@ const PrayerListing: React.FC = () => {
     console.log(prayers)
 
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(event.target.value);
-        // 여기서 해시태그 추천 로직을 추가합니다.
-      };
-
-
 
     useEffect(() => {
         dispatch(fetchPrayers());
@@ -186,7 +180,7 @@ const PrayerListing: React.FC = () => {
 
                       <div 
                         className="view ql-editor" 
-                        dangerouslySetInnerHTML={{ __html : DOMPurify.sanitize( prayer.title ) }}
+                        dangerouslySetInnerHTML={{ __html : DOMPurify.sanitize( prayer.title || '' ) }}
                  
                         >
             
