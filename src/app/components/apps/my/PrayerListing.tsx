@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
+import DOMPurify from 'dompurify';
 import { DragDropContext, DropResult, Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import {
@@ -19,15 +20,27 @@ import {
   TableHead, 
   Button,
   Grid,
+  Box,
   Stack,
+  Alert,
+  Tooltip,
 } from '@mui/material';
-//import Form from './components/Form';
-//import ToDosList from './components/ToDosList';
 
-//import Form from '@/app/components/apps/my/Form';
-//import ToDosList from '@/app/components/apps/my/ToDosList';
+import PrayerItem from '@/app/components/apps/my/PrayerItem'; 
+import AddPrayer from './AddPrayer';
+import { useTheme } from '@mui/material/styles';
+import Scrollbar from "../../custom-scroll/Scrollbar";
+import { useSelector, useDispatch } from "@/store/hooks";
+import {
+  fetchPrayers,
+  SelectPrayer,
+  DeletePrayer,
+  SearchPrayers,
+} from "@/store/apps/prayers/PrayersSlice";
+import { IconTrash } from "@tabler/icons-react";
+import { PrayersType } from '../../../(DashboardLayout)/types/apps/prayers';
 
-import PrayerItem from '@/app/components/apps/my/PrayerItem'; // ToDo 컴포넌트 임포트
+
 
 const List = styled.ul`
   list-style-type: none;
@@ -55,9 +68,17 @@ interface Row {
   title: string; 
   subtitle: string;
   teams: Team[];
-
 }
+
+interface colorsType {
+  lineColor: string;
+  disp: string | any;
+  id: number;
+}
+
+
 const PrayerListing: React.FC = () => {
+  
   const [toDos, setToDos] = useState<Row[]>([
     {
       id:'1',
@@ -129,52 +150,108 @@ const PrayerListing: React.FC = () => {
     setEditing(!editing);
   };
 
+  const theme = useTheme();
+  const colorvariation: colorsType[] = [
+    {
+      id: 1,
+      lineColor: theme.palette.warning.main,
+      disp: 'warning',
+    },
+    {
+      id: 2,
+      lineColor: theme.palette.info.main,
+      disp: 'info',
+    },
+    {
+      id: 3,
+      lineColor: theme.palette.error.main,
+      disp: 'error',
+    },
+    {
+      id: 4,
+      lineColor: theme.palette.success.main,
+      disp: 'success',
+    },
+    {
+      id: 5,
+      lineColor: theme.palette.primary.main,
+      disp: 'primary',
+    },
+  ];
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchPrayers());
+  }, [dispatch]);
+
+
+  const filterPrayers = (prayers: PrayersType[], nSearch: string) => {
+    if (nSearch !== "")
+      return prayers.filter(
+        (t: any) =>
+          !t.deleted &&
+          t.title
+            .toLocaleLowerCase()
+            .concat(" ")
+            .includes(nSearch.toLocaleLowerCase())
+      );
+
+    return prayers.filter((t) => !t.deleted);
+  };
+  const prayers = useSelector((state) =>
+    filterPrayers(state.prayersReducer.prayers, state.prayersReducer.prayerSearch)
+  );
+  console.log(prayers)
+  
   return (
 
     <Grid container spacing={3}>
-           
-       
-
         <Grid item xs={12}>
-            <Stack spacing={1} direction={{ xs: 'column', sm: 'row' }} justifyContent="start">
-              <Button color="primary"  onClick={onEdit} >{!editing ? "편집" : "완료"}</Button>
-            </Stack>
 
-            <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId="toDosId">
-                {(provided) => (
-                <TableContainer className="toDosId" ref={provided.innerRef} {...provided.droppableProps}>
-                  <Table aria-label="simple table">
-                    <TableHead>
-                      <TableRow>
-                        { editing &&
-                        <TableCell></TableCell>
-                        }
-                        <TableCell>
-                          <Typography variant="h6">No.</Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="h6">상태</Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="h6">날짜</Typography>
-                        </TableCell>
-                        { !editing &&
-                        <TableCell></TableCell>
-                        }
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>          
-                    {toDos.map((toDo, index) => (
-                      <PrayerItem key={index} index={index} id={`item-${toDo.id}`} status={toDo.status} title={toDo.title} subtitle={toDo.subtitle} avatar={toDo.avatar} users={toDo.users} teams={toDo.teams} editing={editing} />
-                    ))}
-                    {provided.placeholder}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-                )}
-              </Droppable>
-            </DragDropContext>
+          <Box display="flex" alignItems="center" justifyContent="space-between" p={2}>
+            <Button color="primary"  onClick={onEdit} >{!editing ? "편집" : "완료"}</Button>
+         
+          </Box>
+            
+
+
+
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="toDosId">
+              {(provided) => (
+              <TableContainer className="toDosId" ref={provided.innerRef} {...provided.droppableProps}>
+                <Table aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      { editing &&
+                      <TableCell></TableCell>
+                      }
+                      <TableCell>
+                        <Typography variant="h6">No.</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="h6">상태</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="h6">날짜</Typography>
+                      </TableCell>
+                      { !editing &&
+                      <TableCell></TableCell>
+                      }
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>          
+                  {toDos.map((toDo, index) => (
+                    <PrayerItem key={index} index={index} id={`item-${toDo.id}`} status={toDo.status} title={toDo.title} subtitle={toDo.subtitle} avatar={toDo.avatar} users={toDo.users} teams={toDo.teams} editing={editing} />
+                  ))}
+                  {provided.placeholder}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              )}
+            </Droppable>
+          </DragDropContext>
 
       </Grid>
     </Grid>

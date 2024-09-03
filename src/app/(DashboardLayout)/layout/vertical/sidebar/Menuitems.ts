@@ -93,7 +93,6 @@ const Menuitems: MenuitemsType[] = [
     navlabel: true,
     subheader: "내 기도",
   },
-
   {
     id: uniqueId(),
     title: "최근 기도",
@@ -101,12 +100,6 @@ const Menuitems: MenuitemsType[] = [
     href: "/apps/my/new",
     chip: "New",
     chipColor: "secondary",
-  },
-  {
-    id: uniqueId(),
-    title: "응답된 기도",
-    icon: IconAlertCircle,
-    href: "/apps/my/confirm",
   },
   {
     id: uniqueId(),
