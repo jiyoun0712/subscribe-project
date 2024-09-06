@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import DOMPurify from 'dompurify';
-import { DragDropContext, DropResult, Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import {
   TableContainer,
@@ -26,7 +25,6 @@ import {
   Tooltip,
 } from '@mui/material';
 
-import PrayerItem from '@/app/components/apps/my/PrayerItem'; 
 import AddPrayer from './AddPrayer';
 import { useTheme } from '@mui/material/styles';
 import Scrollbar from "../../custom-scroll/Scrollbar";
@@ -130,15 +128,11 @@ const PrayerListing: React.FC = () => {
     const prayers = useSelector((state) =>
         filterPrayers(state.prayersReducer.prayers, state.prayersReducer.prayerSearch)
     );
-    console.log(prayers)
-
-
+    
 
     useEffect(() => {
         dispatch(fetchPrayers());
     }, [dispatch]);
-
-
 
   
   return (
@@ -150,7 +144,6 @@ const PrayerListing: React.FC = () => {
             <AddPrayer  colors={colorvariation} />
           </Box>
             
-
           <Box>
             <Scrollbar
               sx={{
@@ -174,20 +167,15 @@ const PrayerListing: React.FC = () => {
                       }}
                       onClick={() => dispatch(SelectPrayer(index))}
                     >
+                      {/*
                       <Typography variant="h6" noWrap color={prayer.color + ".main"}>
                         {prayer.title}
-                      </Typography>
+                      </Typography>*/}
 
                       <div 
                         className="view ql-editor" 
-                        dangerouslySetInnerHTML={{ __html : DOMPurify.sanitize( prayer.title || '' ) }}
-                 
-                        >
-            
+                        dangerouslySetInnerHTML={{ __html : DOMPurify.sanitize( prayer.title || '' ) }}>
                       </div>
-
-        
-
 
                       <Stack
                         direction="row"
