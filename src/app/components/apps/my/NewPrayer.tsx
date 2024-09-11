@@ -141,7 +141,7 @@ const PrayerListing: React.FC = () => {
         <Grid item xs={12}>
 
           <Box display="flex" alignItems="center" justifyContent="space-between" p={2}>
-            <AddPrayer  colors={colorvariation} />
+            {/* <AddPrayer  colors={colorvariation} /> */}
           </Box>
             
           <Box>

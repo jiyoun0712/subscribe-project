@@ -41,7 +41,7 @@ const ReactQuillWrapper = forwardRef((props: any, ref) => {
 });
 
 
-
+/* eslint-disable react/display-name */
 const AddPrayer = ({ colors }: Props) => {
   const dispatch = useDispatch();
   const quillRef = useRef<any>(null);
@@ -227,5 +227,5 @@ const AddPrayer = ({ colors }: Props) => {
     </>
   );
 };
-AddPrayer.displayName = 'AddPrayer';
+
 export default AddPrayer;
