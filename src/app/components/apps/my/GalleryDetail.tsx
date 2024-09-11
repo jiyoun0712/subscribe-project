@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import { fetchPosts } from "@/store/apps/gallery/GallerySlice";
+import { fetchPhotos } from "@/store/apps/gallery/GallerySlice";
 import { usePathname } from "next/navigation";
 import {
   Button,
@@ -34,14 +34,14 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id }) => {
   const getTitle: number | any = id;
 
   useEffect(() => {
-    dispatch(fetchPosts());
+    dispatch(fetchPhotos());
   }, [dispatch]);
 
   // Get post
-  const getPost = useSelector((state: AppState) => state.feedReducer.posts);
+  const getPhotos = useSelector((state: AppState) => state.galleryReducer.gallery);
 
 
-  const post: GalleryType | any = getPost.find(
+  const photo: GalleryType | any = getPhotos.find(
     (p: GalleryType) => getTitle === p.id
   );
 
@@ -73,6 +73,18 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id }) => {
 
     return () => clearTimeout(timer);
   }, []);
+
+
+  
+  // Get post
+  const getPost = useSelector((state: AppState) => state.galleryReducer.gallery);
+
+
+  const post: GalleryType | any = getPost.find(
+    (p: GalleryType) => getTitle === p.id
+  );
+
+
     
   // 개행 문자를 <br />로 변환하는 함수
   const convertNewlineToBreak = (text: string) => {
@@ -119,7 +131,7 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id }) => {
               ) : (
                 <>
                
-                    <Grid item sm={12} lg={photo.featured ? 12 : 6} key={photo.cover}>
+                    <Grid item sm={12} lg={6} key={photo.cover}>
                       <CardMedia
                         component="img"
                         height="440"
