@@ -21,6 +21,11 @@ import { GalleryType } from "../../../(DashboardLayout)/types/apps/gallery";
 
 const GalleryCard = () => {
   const dispatch = useDispatch();
+
+   
+  
+  const [openDialogId, setOpenDialogId] = React.useState<number | string | null>(null); // number 또는 string 타입
+
   useEffect(() => {
     dispatch(fetchPhotos());
   }, [dispatch]);
@@ -48,6 +53,15 @@ const GalleryCard = () => {
 
     return () => clearTimeout(timer);
   }, []);
+
+
+  const handleCardMediaClick = (id: number|string) => {
+    setOpenDialogId(id); // 클릭한 사진의 ID로 다이얼로그 열기
+  };
+
+  const handleDialogClose = () => {
+    setOpenDialogId(null); // 다이얼로그 닫기
+  };
 
   return (
     <>
@@ -100,6 +114,9 @@ const GalleryCard = () => {
                     height="220"
                     alt="Remy Sharp"
                     src={photo.cover}
+                    
+                    style={{ cursor: 'pointer' }} // 클릭 가능하도록 커서 변경
+                    onClick={() => handleCardMediaClick(photo.id)} // CardMedia 클릭 시 다이얼로그 열기
                   />
                 )}
                 <Box p={3}>
@@ -130,13 +147,19 @@ const GalleryCard = () => {
                   </Stack>
                 </Box>
 
-                <Box>
+                {/* <Box>
                   <Stack direction="row" gap={1} alignItems="right" justifyContent="end">
                     <DetailDialog id={photo.id} />
                   </Stack>
-                </Box>
+                </Box> */}
 
-                
+               {/* 다이얼로그를 조건부 렌더링 */}
+               <>
+                {/* 다이얼로그를 조건부 렌더링 */}
+              {openDialogId === photo.id && (
+                <DetailDialog id={photo.id} onClose={handleDialogClose} />
+              )}
+                </>
               </BlankCard>
             </Grid>
           );

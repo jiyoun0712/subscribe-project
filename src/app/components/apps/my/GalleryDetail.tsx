@@ -23,9 +23,10 @@ import { useSwipeable } from 'react-swipeable';
 
 interface DetailDialogProps {
   id: number | string;
+  onClose: () => void; // onClose prop 추가
 }
 
-const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id }) => {
+const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
   const dispatch = useDispatch();
   const pathName = usePathname();
   const [open, setOpen] = React.useState(false);
@@ -106,14 +107,14 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id }) => {
     <>
      
       
-      <Stack direction={'row'} gap={2} alignItems="center" justifyContent="flex-end">
+      {/* <Stack direction={'row'} gap={2} alignItems="center" justifyContent="flex-end">
         <Button size="small" onClick={handleClickOpen('paper')}>더보기</Button>
-      </Stack>
+      </Stack> */}
 
 
       <Dialog
-        open={open}
-        onClose={handleClose}
+          open={true} // 항상 다이얼로그가 열려있도록 설정 (부모가 열림 상태 제어)
+          onClose={onClose} // 다이얼로그를 닫는 동작 처리
         scroll={scroll}
         fullScreen  
         aria-labelledby="scroll-dialog-title"
@@ -217,7 +218,7 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id }) => {
             다음
           </Button>
 
-          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={onClose}>Close</Button>
         </DialogActions>
       </Dialog>
     </>
