@@ -81,7 +81,7 @@ const Menuitems: MenuitemsType[] = [
     id: uniqueId(),
     title: "Shorts",
     icon: IconAperture,
-    href: "/shorts",
+    href: "/apps/my/gallery",
   },
   {
     id: uniqueId(),

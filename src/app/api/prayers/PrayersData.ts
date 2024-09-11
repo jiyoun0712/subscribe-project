@@ -34,7 +34,14 @@ const PrayersData = [
     deleted: false,
   },
 ];
+
+
+
 mock.onGet('/api/data/prayers/PrayersData').reply(() => {
   return [200, PrayersData];
 });
-export default PrayersData;
+
+
+
+
+

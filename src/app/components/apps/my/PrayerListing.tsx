@@ -211,11 +211,7 @@ const PrayerListing: React.FC = () => {
 
           <Box display="flex" alignItems="center" justifyContent="space-between" p={2}>
             <Button color="primary"  onClick={onEdit} >{!editing ? "편집" : "완료"}</Button>
-         
           </Box>
-            
-
-
 
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="toDosId">

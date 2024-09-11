@@ -5,4 +5,3 @@ export interface PrayersType {
     datef?: any | string;
     deleted: boolean;
   }
-  

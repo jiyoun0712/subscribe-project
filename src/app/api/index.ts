@@ -3,6 +3,7 @@ import './blog/blogData';
 //import './contacts/ContactsData';
 //import './chat/Chatdata';
 import './prayers/PrayersData';
+import './gallery/GalleryData';
 //import './ticket/TicketData';
 //import './eCommerce/ProductsData';
 //import './email/EmailData';

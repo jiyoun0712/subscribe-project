@@ -24,8 +24,10 @@ interface Props {
 // Quill 에디터 동적 로드
 const ReactQuillBase = dynamic(() => import('react-quill'), { ssr: false });
 
-  // Custom ReactQuill wrapper to forward ref
-  const ReactQuillWrapper = forwardRef((props: any, ref) => {
+
+
+// Custom ReactQuill wrapper to forward ref
+const ReactQuillWrapper = forwardRef((props: any, ref) => {
   const quillRef = useRef<any>(null);
 
   // Forward the Quill instance to parent through ref

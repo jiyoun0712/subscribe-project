@@ -9,12 +9,14 @@ interface StateType {
   prayers: any[];
   prayersContent: number;
   prayerSearch: string;
+
 }
 
 const initialState = {
   prayers: [],
   prayersContent: 0,
   prayerSearch: '',
+
 };
 
 export const PrayersSlice = createSlice({

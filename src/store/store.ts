@@ -7,6 +7,7 @@ import CustomizerReducer from "./customizer/CustomizerSlice";
 import BlogReducer from "./apps/blog/BlogSlice";
 import FeedReducer from "./apps/feed/FeedSlice";
 import PrayersReducer from "./apps/prayers/PrayersSlice";
+import GalleryReducer from "./apps/gallery/GallerySlice";
 
 const persistConfig = {
   key: "root",
@@ -21,6 +22,7 @@ export const store = configureStore({
     //   chatReducer: ChatsReducer,
     //   emailReducer: EmailReducer,
        prayersReducer: PrayersReducer,
+       galleryReducer: GalleryReducer,
     //   contactsReducer: ContactsReducer,
     //   ticketReducer: TicketReducer,
        feedReducer: FeedReducer,
@@ -37,6 +39,7 @@ export const store = configureStore({
     // chatReducer: ChatsReducer,
     // emailReducer: EmailReducer,
      prayersReducer: PrayersReducer,
+     galleryReducer: GalleryReducer,     
     // contactsReducer: ContactsReducer,
     // ticketReducer: TicketReducer,
      feedReducer: FeedReducer,
