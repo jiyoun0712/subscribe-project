@@ -24,8 +24,6 @@ interface Props {
 // Quill 에디터 동적 로드
 const ReactQuillBase = dynamic(() => import('react-quill'), { ssr: false });
 
-
-
 // Custom ReactQuill wrapper to forward ref
 const ReactQuillWrapper = forwardRef((props: any, ref) => {
   const quillRef = useRef<any>(null);
@@ -39,9 +37,10 @@ const ReactQuillWrapper = forwardRef((props: any, ref) => {
 
   return <ReactQuillBase ref={quillRef} {...props} />;
 });
+// displayName을 명시적으로 추가
+ReactQuillWrapper.displayName = "ReactQuillWrapper";
 
 
-/* eslint-disable react/display-name */
 const AddPrayer = ({ colors }: Props) => {
   const dispatch = useDispatch();
   const quillRef = useRef<any>(null);
@@ -227,5 +226,5 @@ const AddPrayer = ({ colors }: Props) => {
     </>
   );
 };
-
+AddPrayer.displayName = 'AddPrayer';
 export default AddPrayer;
