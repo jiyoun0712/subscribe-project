@@ -44,7 +44,7 @@ const ReactQuillWrapper = forwardRef((props: any, ref) => {
 
 
 
-const AddNotes = ({ colors }: Props) => {
+const AddPrayer = ({ colors }: Props) => {
   const dispatch = useDispatch();
   const quillRef = useRef<any>(null);
   
@@ -230,4 +230,4 @@ const AddNotes = ({ colors }: Props) => {
   );
 };
 
-export default AddNotes;
+export default AddPrayer;
