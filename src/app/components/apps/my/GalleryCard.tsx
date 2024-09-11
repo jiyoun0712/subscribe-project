@@ -10,7 +10,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import React, { useEffect } from "react";
 //import BlankCard from "../../../../components/shared/BlankCard";
-//import DetailDialog from './GalleryDetail';
+import DetailDialog from './GalleryDetail';
 
 import BlankCard from "../../../components/shared/BlankCard";
 import { useSelector, useDispatch } from "@/store/hooks";
@@ -120,7 +120,7 @@ const GalleryCard = () => {
 
                 <Box>
                   <Stack direction="row" gap={1} alignItems="right" justifyContent="end">
-                    {/* <DetailDialog id={photo.id} /> */}
+                    <DetailDialog id={photo.id} />
                   </Stack>
                 </Box>
 
