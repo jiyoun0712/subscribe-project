@@ -104,8 +104,20 @@ const GalleryCard = () => {
                 )}
                 <Box p={3}>
                   <Stack direction="row" gap={1}>
-                    <Box>
-                      <Typography variant="h6">{photo.name}jpg</Typography>
+                    <Box
+                    style={{
+                      maxWidth: '100%',  // Box의 최대 너비를 설정
+                      whiteSpace: 'nowrap',   // 텍스트를 한 줄로 유지
+                      overflow: 'hidden',     // 넘치는 텍스트 숨기기
+                     
+                    }}
+                    >
+                      <Typography variant="h6" style={{
+                     
+                      whiteSpace: 'nowrap',   // 텍스트를 한 줄로 유지
+                      overflow: 'hidden',     // 넘치는 텍스트 숨기기
+                   
+                    }}>{photo.name}</Typography>
                       <Typography variant="caption">
                         {format(new Date(photo.time), "E, MMM d, yyyy")}
                       </Typography>
