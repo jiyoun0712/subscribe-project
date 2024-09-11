@@ -197,6 +197,7 @@ const PostItem = ({ post }: Props) => {
 
 
           {/* 2번째 아이콘 */}
+          {/*
           <IconButton
             aria-label="like"
             color={
@@ -208,6 +209,7 @@ const PostItem = ({ post }: Props) => {
           <Typography variant="body1" fontWeight={600}>
             {post?.data && post?.data.likes && post?.data.likes.value}
           </Typography>
+          */}
 
           {/* 3번째 아이콘 */}
           <motion.div 
