@@ -79,7 +79,7 @@ const Menuitems: MenuitemsType[] = [
   },
   {
     id: uniqueId(),
-    title: "Shorts",
+    title: "기도",
     icon: IconAperture,
     href: "/apps/my/gallery",
   },

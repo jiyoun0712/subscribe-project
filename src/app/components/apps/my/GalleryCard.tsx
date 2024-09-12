@@ -70,7 +70,7 @@ const GalleryCard = () => {
           <Stack direction="row" alignItems={"center"} mt={2}>
             <Box>
               <Typography variant="h3">
-                Gallery &nbsp;
+                기도 &nbsp;
                 <Chip label={getPhotos.length} color="secondary" size="small" />
               </Typography>
             </Box>
