@@ -36,14 +36,7 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
 
   const photos = useSelector((state: AppState) => state.galleryReducer.gallery);
 
-  //현재 id 인덱스를 초기화
-  useEffect(() => {
-    const index = photos.findIndex((photo: GalleryType) => photo.id === id);
-    if(index !== -1){
-      setCurrentIndex(index);
-    }
-  }, [photos, id]);
-  
+ 
   const currentPhoto = photos[currentIndex];
   
   // 스와이프 이벤트 처리
@@ -89,6 +82,16 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
     }
   }, [open]);
 
+  // 개행 문자를 <br />로 변환하는 함수
+  const convertNewlineToBreak = (text: string) => {
+    return text.split('\n').map((str, index) => (
+      <React.Fragment key={index}>
+        {str}
+        <br />
+      </React.Fragment>
+    ));
+  };
+
   // skeleton
   const [isLoading, setLoading] = React.useState(true);
   useEffect(() => {
@@ -100,6 +103,13 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
   }, []);
 
 
+  //현재 id 인덱스를 초기화
+  useEffect(() => {
+    const index = photos.findIndex((photo: GalleryType) => photo.id === id);
+    if(index !== -1){
+      setCurrentIndex(index);
+    }
+  }, [photos, id]);
 
 
 
@@ -139,55 +149,53 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
                 </>
               ) : (
                 <>
-               
-             
-             
-                    <Grid item sm={12} lg={currentPhoto.name ? 12 : 6} key={currentPhoto.cover} container justifyContent="center" alignItems="center">
-                      <CardMedia
-                        component="img"
-                        image={currentPhoto.cover}
-                        alt={currentPhoto.name}
-                        style={{
-                          width: '100vw', // 뷰포트 너비에 맞추기
-                          height: '100vh', // 뷰포트 높이에 맞추기
-                          objectFit: 'cover', // 이미지를 잘리지 않도록 조정
 
-                        }}
-                      />
-                    </Grid>
-          {/* 이미지 위에 날짜를 좌측 상단에 배치 */}
-          <div style={{
-            position: 'absolute',
-            top: '10px',
-            left: '10px',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)', // 검은색 투명 배경
-            padding: '5px 10px',
-            borderRadius: '5px',
-            color: 'white',
-          }}>
-            {format(new Date(currentPhoto?.time), 'E, MMM d, yyyy')}
-          </div>
-           
-          {/* 이미지 위에 제목을 중앙에 배치 */}
-          <div style={{
-            position: 'absolute',
-            top: '86px',
-            bottom: '86px',
-            left: '16px',
-            right: '16px',
-            backgroundColor: 'rgba(0, 0, 0, 0.1)', // 검은색 투명 배경
-            color: 'white',
-            padding: '10px 20px',
-            borderRadius: '10px',
-            textAlign: 'left',
-            overflow: 'auto', // 스크롤 추가
-            maxHeight: '100vh', // 화면 높이에 맞게 스크롤 제한
-          }}>
-            <p style={{ margin: 0 }}>{currentPhoto?.name}</p>
-          </div>
+                  <Grid item sm={12} lg={currentPhoto.name ? 12 : 6} key={currentPhoto.cover} container justifyContent="center" alignItems="center">
+                    <CardMedia
+                      component="img"
+                      image={currentPhoto.cover}
+                      alt={currentPhoto.name}
+                      style={{
+                        width: '100vw', // 뷰포트 너비에 맞추기
+                        height: '100vh', // 뷰포트 높이에 맞추기
+                        objectFit: 'cover', // 이미지를 잘리지 않도록 조정
 
+                      }}
+                    />
+                  </Grid>
 
-
+                  {/* 이미지 위에 날짜를 좌측 상단에 배치 */}
+                  <div style={{
+                    position: 'absolute',
+                    top: '10px',
+                    left: '10px',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)', // 검은색 투명 배경
+                    padding: '5px 10px',
+                    borderRadius: '5px',
+                    color: 'white',
+                  }}>
+                    {format(new Date(currentPhoto?.time), 'E, MMM d, yyyy')}
+                  </div>
+                  
+                  {/* 이미지 위에 내용을 중앙에 배치 */}
+                  <div style={{
+                    position: 'absolute',
+                    top: '86px',
+                    bottom: '86px',
+                    left: '16px',
+                    right: '16px',
+                    backgroundColor: 'rgba(0, 0, 0, 0.1)', // 검은색 투명 배경
+                    color: 'white',
+                    padding: '10px 20px',
+                    borderRadius: '10px',
+                    textAlign: 'left',
+                    overflow: 'auto', // 스크롤 추가
+                    maxHeight: '100vh', // 화면 높이에 맞게 스크롤 제한
+                  }}>
+                    <p style={{ margin: 0 }}>
+                    {convertNewlineToBreak(currentPhoto?.name)}
+                    </p>
+                  </div>
                 </>
               )}
           </>
