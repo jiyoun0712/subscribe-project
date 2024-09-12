@@ -34,6 +34,7 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
   const [scroll, setScroll] = React.useState<DialogProps['scroll']>('paper');
  
   const [currentIndex, setCurrentIndex] = useState<number>(0); // 현재 게시물 인덱스 관리
+  const [isAnimating, setAnimating] = React.useState<boolean>(false); // 애니메이션 상태 관리
 
   const photos = useSelector((state: AppState) => state.galleryReducer.gallery);
 
@@ -49,14 +50,27 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
   });
 
   const handleNext = () => {
+
+
+
     if (currentIndex < photos.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+      setAnimating(true); // 애니메이션 시작
+      setTimeout(() => {
+        setCurrentIndex(currentIndex + 1);
+        setAnimating(false); // 애니메이션 끝
+      }, 300); // 애니메이션 지속 시간 (300ms)
     }
+
+
   };
 
   const handlePrev = () => {
     if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
+      setAnimating(true); // 애니메이션 시작
+      setTimeout(() => {
+        setCurrentIndex(currentIndex - 1);
+        setAnimating(false); // 애니메이션 끝
+      }, 300); // 애니메이션 지속 시간 (300ms)
     }
   };
 
@@ -149,7 +163,12 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
                   ></Skeleton>
                 </>
               ) : (
-                <>
+                <div
+                style={{
+                  transition: 'opacity 0.5s ease-in-out', // 트랜지션 적용
+                  opacity: isAnimating ? 0.8 : 1, // 페이드 아웃과 페이드 인 제어
+                }}
+                >
 
                   <Grid item sm={12} lg={currentPhoto.name ? 12 : 6} key={currentPhoto.cover} container justifyContent="center" alignItems="center">
                     <CardMedia
@@ -200,7 +219,7 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
                     </Typography>
                     </p>
                   </div>
-                </>
+                </div>
               )}
           </>
 

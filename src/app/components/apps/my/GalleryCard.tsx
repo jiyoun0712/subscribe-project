@@ -26,9 +26,8 @@ const GalleryCard = () => {
   
   const [openDialogId, setOpenDialogId] = React.useState<number | string | null>(null); // number 또는 string 타입
 
-  useEffect(() => {
-    dispatch(fetchPhotos());
-  }, [dispatch]);
+
+
 
   const filterPhotos = (photos: GalleryType[], cSearch: string) => {
     if (photos)
@@ -38,10 +37,20 @@ const GalleryCard = () => {
 
     return photos;
   };
+
   const [search, setSearch] = React.useState("");
   const getPhotos = useSelector((state) =>
     filterPhotos(state.galleryReducer.gallery, search)
   );
+
+  const handleCardMediaClick = (id: number|string) => {
+    setOpenDialogId(id); // 클릭한 사진의 ID로 다이얼로그 열기
+  };
+
+  const handleDialogClose = () => {
+    setOpenDialogId(null); // 다이얼로그 닫기
+  };
+
 
   // skeleton
   const [isLoading, setLoading] = React.useState(true);
@@ -55,13 +64,12 @@ const GalleryCard = () => {
   }, []);
 
 
-  const handleCardMediaClick = (id: number|string) => {
-    setOpenDialogId(id); // 클릭한 사진의 ID로 다이얼로그 열기
-  };
 
-  const handleDialogClose = () => {
-    setOpenDialogId(null); // 다이얼로그 닫기
-  };
+
+    
+  useEffect(() => {
+    dispatch(fetchPhotos());
+  }, [dispatch]);
 
   return (
     <>
