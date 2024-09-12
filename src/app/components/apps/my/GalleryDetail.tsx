@@ -9,6 +9,7 @@ import {
   DialogActions,
   Stack,
   DialogProps,
+  Typography,
 } from '@mui/material';
 import CardMedia from '@mui/material/CardMedia';
 import Skeleton from '@mui/material/Skeleton';
@@ -192,8 +193,11 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
                     overflow: 'auto', // 스크롤 추가
                     maxHeight: '100vh', // 화면 높이에 맞게 스크롤 제한
                   }}>
-                    <p style={{ margin: 0 }}>
+                    <p style={{ 
+                      margin: 0,
+                      }}><Typography variant="subtitle2">
                     {convertNewlineToBreak(currentPhoto?.name)}
+                    </Typography>
                     </p>
                   </div>
                 </>

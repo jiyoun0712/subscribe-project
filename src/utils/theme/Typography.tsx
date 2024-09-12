@@ -1,5 +1,7 @@
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { Noto_Sans_KR } from 'next/font/google';
+import { Noto_Serif_KR } from 'next/font/google';
+
 
 export const plus = Plus_Jakarta_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -8,8 +10,12 @@ export const plus = Plus_Jakarta_Sans({
   fallback: ["Helvetica", "Arial", "sans-serif"],
 });
 
-
 export const notoSansKR = Noto_Sans_KR({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+});
+
+export const notoSerifKR = Noto_Serif_KR({
   subsets: ['latin'],
   weight: ['400', '500', '700'],
 });
@@ -63,13 +69,16 @@ const typography: any = {
     fontWeight: 400,
     lineHeight: '1rem',
   },
+
   subtitle1: {
     fontSize: '0.875rem',
     fontWeight: 400,
   },
   subtitle2: {
-    fontSize: '0.875rem',
-    fontWeight: 400,
+    fontSize: '1rem',  // 크기를 subtitle1, 2와 다르게 설정
+    fontWeight: 400,      // 다른 폰트 굵기
+    lineHeight: '1.85rem', // 원하는 라인 높이
+    fontFamily: notoSerifKR.style.fontFamily, // 다른 폰트 적용 가능
   },
 };
 
