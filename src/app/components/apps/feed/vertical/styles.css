@@ -10,8 +10,8 @@
   .prayerSwiper .swiper-slide {
     text-align: center;
     font-size: 18px;
-    background: #fff;
-  
+    /* background: #fff; */
+    overflow:hidden;
   
   }
   .prayerSwiper .swiper-slide .slide-content {

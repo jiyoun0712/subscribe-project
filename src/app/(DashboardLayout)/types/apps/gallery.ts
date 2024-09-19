@@ -1,5 +1,5 @@
   export interface GalleryType {
-    id: number | string;
+    id: number;
     cover: string;
     name: string;
     time: string;

@@ -25,7 +25,7 @@ import ReelsList from './ReelsList';
 
 
 interface DetailDialogProps {
-  id: number | string;
+  id: number;
   onClose: () => void; // onClose prop 추가
 }
 
@@ -53,8 +53,6 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
 
   const handleNext = () => {
 
-
-
     if (currentIndex < photos.length - 1) {
       setAnimating(true); // 애니메이션 시작
       setTimeout(() => {
@@ -75,10 +73,6 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
       }, 300); // 애니메이션 지속 시간 (300ms)
     }
   };
-
-
-
-
 
   const handleClickOpen = (scrollType: DialogProps['scroll']) => () => {
     setOpen(true);
@@ -180,7 +174,7 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
                   ></Skeleton>
                 </>
               ) : (
-                <ReelsList />
+                <ReelsList id={id} />
               )}
           </>
 

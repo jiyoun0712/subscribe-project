@@ -23,7 +23,7 @@ import { useSwipeable } from 'react-swipeable';
 
 
 interface DetailDialogProps {
-  id: number | string;
+  id: number ;
   onClose: () => void; // onClose prop 추가
 }
 
