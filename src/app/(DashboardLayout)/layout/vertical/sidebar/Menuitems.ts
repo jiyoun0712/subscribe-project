@@ -85,9 +85,9 @@ const Menuitems: MenuitemsType[] = [
   },
   {
     id: uniqueId(),
-    title: "구독",
+    title: "피드",
     icon: IconAperture,
-    href: "/subscript",
+    href: "/apps/feed/vertical",
   },
   {
     navlabel: true,
