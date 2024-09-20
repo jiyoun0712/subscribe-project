@@ -138,13 +138,12 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
 
 
       <Dialog
-          open={true} // 항상 다이얼로그가 열려있도록 설정 (부모가 열림 상태 제어)
-          onClose={onClose} // 다이얼로그를 닫는 동작 처리
+        open={true} // 항상 다이얼로그가 열려있도록 설정 (부모가 열림 상태 제어)
+        onClose={onClose} // 다이얼로그를 닫는 동작 처리
         scroll={scroll}
         fullScreen  
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
-       
       >
         {/* <DialogTitle id="scroll-dialog-title">{currentPhoto?.time}</DialogTitle> */}
         <DialogContent dividers={scroll === 'paper'} {...handlers} style={{ touchAction: 'none', padding:0 }}>
@@ -214,8 +213,9 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
                   }}>
                     <p style={{ 
                       margin: 0,
-                      }}><Typography variant="subtitle2">
-                    {convertNewlineToBreak(currentPhoto?.name)}
+                      }}>
+                    <Typography variant="subtitle2">
+                      {convertNewlineToBreak(currentPhoto?.name)}
                     </Typography>
                     </p>
                   </div>

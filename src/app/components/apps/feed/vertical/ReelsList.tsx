@@ -1,5 +1,6 @@
 import Grid from '@mui/material/Grid';
 import { useEffect, useState, useRef } from 'react';
+import { Swiper as SwiperCore } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import './styles.css';
@@ -8,28 +9,69 @@ import { useSwipeable } from 'react-swipeable';
 import { useSelector, useDispatch } from'@/store/hooks';
 import { fetchPhotos } from '@/store/apps/gallery/GallerySlice';
 import ReelsImage from './ReelsImage';
-//import { PostTextBox } from './PostTextBox';
+
 import { GalleryType } from '../../../../(DashboardLayout)/types/apps/gallery';
-import { Swiper as SwiperCore } from 'swiper';
+
 
 
 
 interface DetailDialogProps {
     id: number;
+    onSwipeLeft: (slideId: number, deltaX: number) => void;
   }
 
 
-const ReelsList: React.FC<DetailDialogProps> = ({ id }) => {
+const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
    // const [slides, setSlides] = useState([]);
     const [slides, setSlides] = useState<GalleryType[]>([]);
     const [initialIndex, setInitialIndex] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
-    const swiperRef = useRef(null);
+    const swiperRef = useRef<SwiperCore | null>(null);
 
     const [swiping, setSwiping] = useState(false);
     const [translateX, setTranslateX] = useState(0);
 
 
+    const swiperHandlers = useSwipeable({
+        onSwiping: (eventData) => {
+
+            console.log('@1')
+            if(eventData.dir === 'Left') {
+
+                console.log('@2')
+                setSwiping(true);
+                setTranslateX(eventData.deltaX);
+
+                const swiper = swiperRef.current;
+                if (swiper) {
+
+                    console.log('@2---1')
+                    const activeIndex = swiper.activeIndex;
+                    console.log(activeIndex)
+                    const activeSlide = slides[activeIndex];
+                  
+                    console.log('@2---2')
+                    console.log(activeSlide)
+                    onSwipeLeft(activeSlide.id, eventData.deltaX);
+                    
+                }
+            }
+        },
+        onSwipedLeft:(eventData) => {
+            console.log('@3')
+            const swiper = swiperRef.current;
+            if (swiper) {
+                const activeIndex = swiper.activeIndex;
+                const activeSlide = slides[activeIndex];
+                if (activeSlide) {
+                    onSwipeLeft(activeSlide.id, eventData.deltaX);
+                }
+            }
+        },
+
+        preventScrollOnSwipe: true,
+        trackMouse: true,
+    });
 
    
   
@@ -57,10 +99,11 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id }) => {
     const getPhotos: GalleryType[] = useSelector((state) => state.galleryReducer.gallery);
 
     useEffect(() => {
-    if (getPhotos.length > 0) {
-        setSlides(getPhotos);
-   
-    }
+        if (getPhotos.length > 0) {
+            console.log(getPhotos)
+            setSlides(getPhotos);
+    
+        }
     }, [getPhotos]);
 
   
@@ -85,10 +128,13 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id }) => {
 
 
   return (
-    <Grid container>
+    <Grid container {...swiperHandlers}>
       {initialIndex !== null && slides.length > 0 ? ( // initialIndex가 null이 아닐 때만 렌더링
       <Swiper
-        ref={swiperRef}
+        onSwiper={(swiper) => {
+            swiperRef.current = swiper; // Swiper 인스턴스 할당
+        }}
+        ref={swiperRef as any}
         direction={'vertical'}
         pagination={{ clickable: true }}
         className="prayerSwiper"
