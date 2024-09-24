@@ -78,7 +78,7 @@ const GalleryCard = () => {
           <Stack direction="row" alignItems={"center"} mt={2}>
             <Box>
               <Typography variant="h3">
-                기도 &nbsp;
+                피드 &nbsp;
                 <Chip label={getPhotos.length} color="secondary" size="small" />
               </Typography>
             </Box>
@@ -105,7 +105,8 @@ const GalleryCard = () => {
         </Grid>
         {getPhotos.map((photo) => {
           return (
-            <Grid item xs={12} lg={4} key={photo.id}>
+            <Grid item xs={12} lg={4} key={photo.id} 
+            >
               <BlankCard className="hoverCard">
                 {isLoading ? (
                   <>
