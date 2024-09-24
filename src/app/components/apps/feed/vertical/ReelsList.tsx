@@ -147,7 +147,7 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
         <SwiperSlide key={photo.id}>
           <Grid className="slide-content" item sm={12}>
          
-            <ReelsImage post={photo} />
+            <ReelsImage post={photo} onSwipeLeft={onSwipeLeft} />
           </Grid>
         </SwiperSlide>  
         );

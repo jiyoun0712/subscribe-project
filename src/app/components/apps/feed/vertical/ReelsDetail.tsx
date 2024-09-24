@@ -7,7 +7,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Stack,
+  Box,
+  Avatar,
   DialogProps,
   Typography,
 } from '@mui/material';
@@ -114,17 +115,39 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
         </Button>
         <DialogContent dividers={scroll === 'paper'} style={{ touchAction: 'none', padding:0 }}>
           <>
+
               {isLoading ? (
                 <>
-                  <Skeleton
-                    animation="wave"
-                    variant="rectangular"
-                    width="100%"
-                    height={440}
-                    sx={{
-                      borderRadius: (theme) => theme.shape.borderRadius / 5,
-                    }}
-                  ></Skeleton>
+                <Skeleton variant="rectangular" width="100%">
+                    <div style={{ paddingTop: '100%' }} />
+                </Skeleton>
+                  
+                <Box sx={{ display: 'flex', alignItems: 'center', marginTop:'20px', marginRight: '16px', marginLeft: '16px' }}>
+                    <Box sx={{ margin: 1 }}>
+                        <Skeleton variant="circular">
+                        <Avatar />
+                        </Skeleton>
+                    </Box>
+                    <Box sx={{ width: '100%' }}>
+                        <Skeleton width="30%">
+                        <Typography>.</Typography>
+                        </Skeleton>
+                    </Box>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', marginRight: '16px', marginLeft: '16px' }}>
+                    <Box sx={{ width: '100%' }}>
+                        <Skeleton width="100%">
+                        <Typography>.</Typography>
+                        </Skeleton>
+                    </Box>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', marginRight: '16px', marginLeft: '16px' }}>
+                    <Box sx={{ width: '100%' }}>
+                        <Skeleton width="100%">
+                        <Typography>.</Typography>
+                        </Skeleton>
+                    </Box>
+                </Box>
                 </>
               ) : (
                 <>
@@ -133,8 +156,6 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
                 </>
               )}
           </>
-
-
         </DialogContent>
      
       </Dialog>

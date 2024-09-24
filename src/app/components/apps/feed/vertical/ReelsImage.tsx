@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import React,{ useEffect, useState, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import './styles.css';
@@ -16,9 +16,23 @@ import { fetchPosts } from '@/store/apps/feed/FeedSlice';
 //import { PostTextBox } from './PostTextBox';
 import { GalleryType } from '../../../../(DashboardLayout)/types/apps/gallery';
 
+
 interface Props {
     post: GalleryType;
+
+    onSwipeLeft: (slideId: number, deltaX: number) => void; // 추가된 prop
 }
+
+
+// 개행 문자를 <br />로 변환하는 함수
+const convertNewlineToBreak = (text: string) => {
+    return text.split('\n').map((str, index) => (
+      <React.Fragment key={index}>
+        {str}
+        <br />
+      </React.Fragment>
+    ));
+  };
 
 const Image = styled('img')(({ theme}) => ({
     width: '100%',
@@ -31,7 +45,7 @@ const Contents = styled('div')(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    maxHeight: '112px',
+   
     overflowX: 'hidden',
     minHeight: 0,
     overflowY: 'hidden',
@@ -39,6 +53,7 @@ const Contents = styled('div')(({ theme }) => ({
     alignSelf: 'auto',
     justifyContent: 'flex-start',
     flexGrow: 1,
+    transition: 'max-height 0.5s ease', // 슬라이드 애니메이션
 }))  
 const Buttons = styled('div')(({ theme }) => ({
     position:'static',
@@ -51,13 +66,63 @@ const Buttons = styled('div')(({ theme }) => ({
     alignItems: 'center',
 }))  
 
-const ReelsImage = ({ post }: Props) => {
+const ReelsImage = ({ post, onSwipeLeft }: Props) => {
+    
+    const contentsRef = useRef<HTMLDivElement>(null); // 콘텐츠 영역에 대한 ref
+    const containerRef = useRef<HTMLDivElement>(null); // 외부 영역 감지 ref
+
+    // 슬라이드가 확장 상태인지 확인
+    const [isExpanded, setIsExpanded] = useState(false); // 슬라이드 확장 상태
+
+      // 외부 클릭 시 확장 상태 해제
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      // 클릭된 요소가 contentsRef 내부가 아닌 경우에만 동작
+      if (contentsRef.current && !contentsRef.current.contains(event.target as Node)) {
+        console.log('Clicked outside the Contents area');
+        setIsExpanded(false); // 외부 클릭 시 슬라이드 축소
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+
+
+  
+  }, [isExpanded]);
+
+    // 축소될 때 스크롤 위치를 0으로 복구
+    useEffect(() => {
+        if (!isExpanded && contentsRef.current) {
+            contentsRef.current.scrollTop = 0; // 스크롤을 상단으로 초기화
+            }
+        }, [isExpanded]);
+
+  
+  // 내부 클릭 시 확장
+  const handleMoreClick = () => {
+    setIsExpanded(true);
+  };
+
+   // 내부 클릭 시 이벤트 전파 차단
+   const handleInsideClick = (event: React.MouseEvent) => {
+    console.log('Clicked inside the Contents area');
+   
+    event.stopPropagation(); // 내부 클릭 시 외부 클릭 이벤트를 차단
+  };
+
   return (
     <Grid container
     style={{
         width: '100%',  // Box의 최대 너비를 설정
         height: '100%',
-      }}>
+      }} 
+      ref={containerRef}>
         <Grid item sm={12} lg={12}
         style={{
             width: '100%',  // Box의 최대 너비를 설정
@@ -81,7 +146,10 @@ const ReelsImage = ({ post }: Props) => {
                         backgroundImage: 'linear-gradient(0deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0.35) 100%)',
                       }}>
                     
-                    <div style={{
+                    <div 
+                    
+                    style={{
+                        zIndex:1,
                         position:'absolute',
                         display:'flex',
                         top:'0',
@@ -90,7 +158,16 @@ const ReelsImage = ({ post }: Props) => {
                         alignItems:'end',
                         padding:'20px 12px 20px 16px',
                       }}>
-                        <Contents>
+                        <Contents
+                        
+                        ref={contentsRef}
+                        onClick={handleInsideClick} // 내부 클릭 시 이벤트 전파 차단
+                        style={{
+                        maxHeight: isExpanded ? '70vh' : '112px', // 클릭 시 확장/축소
+                        overflowY: isExpanded ? 'scroll' : 'hidden', // 스크롤 처리
+                        }}
+                       
+                        >
                             <div style={{
                                 display:'flex',
                                 alignItems:'center',
@@ -124,15 +201,23 @@ const ReelsImage = ({ post }: Props) => {
                                     fontSize:'16px',
                                     color:'#fff',
                                     fontWeight:400,
-                                    maxHeight: 42,
+                                    textAlign:'left',
+                                    maxHeight: isExpanded ? 'none' : '74px', // 확장 시 제한 없음
                                 }}>
-                                {post.name}</span>
-                                <span style={{
-                                    fontSize:'14px',
-                                    color:'#fff',
-                                    fontWeight:400,
-                                    flexShrink:0,
-                                }}>...더보기</span>
+                                {convertNewlineToBreak(post.name)}</span>
+                                 {(!isExpanded) &&
+                                    <span style={{
+
+                                    
+                                        fontSize:'14px',
+                                        color:'#fff',
+                                        fontWeight:400,
+                                        flexShrink:0,
+                                        alignSelf:'center',
+                                    }}
+                                    onClick={handleMoreClick}
+                                    >...더보기</span>
+                                }
                             </div>
                         </Contents>
                         <Buttons>
