@@ -187,7 +187,7 @@ const ReelsImage = ({ post, onExpandChange  }: Props) => {
                         ref={contentsRef}
                         onClick={handleInsideClick} // 내부 클릭 시 이벤트 전파 차단
                         style={{
-                        maxHeight: isExpanded ? '75vh' : '68vh', // 클릭 시 확장/축소
+                        maxHeight: isExpanded ? '85vh' : '68vh', // 클릭 시 확장/축소
                         overflowY: isExpanded ? 'scroll' : 'hidden', // 스크롤 처리
                         }}
                        
