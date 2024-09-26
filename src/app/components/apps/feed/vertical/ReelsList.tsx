@@ -36,8 +36,14 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
     const handleExpandChange = (expanded: boolean) => {
       console.log(`handleExpandChange!!! ${expanded}`)
       setIsExpanded(expanded);
+     
       if (swiperRef.current) {
-        swiperRef.current.allowTouchMove = !expanded; // 확장 상태에 따른 스와이프 설정 변경
+        console.log(`swiperRef!!!`)
+        if(expanded){
+          swiperRef.current.allowTouchMove = false; // 확장 상태에 따른 스와이프 설정 변경
+        }else{
+          swiperRef.current.allowTouchMove = true; // 확장 상태에 따른 스와이프 설정 변경
+        }
       }
     };
 
@@ -140,7 +146,7 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
 
 
   return (
-    <Grid container {...swiperHandlers}>
+    <Grid container >{/*{...swiperHandlers}*/}
       {initialIndex !== null && slides.length > 0 ? ( // initialIndex가 null이 아닐 때만 렌더링
       <Swiper
         onSwiper={(swiper) => {
@@ -152,9 +158,7 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
         className="prayerSwiper"
         onSlideChange={handleSlideChange}
         initialSlide={initialIndex} // id에 해당하는 슬라이드로 초기 이동
-        allowTouchMove={false} // 세로 스와이프 비활성화
-  touchStartPreventDefault={true} // 터치 이벤트 기본 동작 방지
-  simulateTouch={false} // 터치 시뮬레이션 비활성화
+  
 
       >
       {slides.map((photo) => {

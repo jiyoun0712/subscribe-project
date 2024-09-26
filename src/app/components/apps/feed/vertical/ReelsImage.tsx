@@ -89,23 +89,27 @@ const ReelsImage = ({ post, onExpandChange  }: Props) => {
 
     // 외부 클릭 시 확장 상태 해제
     useEffect(() => {
-      const handleClickOutside = (event: MouseEvent | TouchEvent) => {
-        // 클릭된 요소가 contentsRef 내부가 아닌 경우에만 동작
-        if (contentsRef.current && !contentsRef.current.contains(event.target as Node)) {
-          console.log('Clicked outside the Contents area');
-          setIsExpanded(false); // 외부 클릭 시 슬라이드 축소
-          onExpandChange(false); // 부모에게 축소 상태 전달
+
+      if(isExpanded){
+          const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+            // 클릭된 요소가 contentsRef 내부가 아닌 경우에만 동작
+            if (contentsRef.current && !contentsRef.current.contains(event.target as Node)) {
+              console.log('Clicked outside the Contents area');
+              setIsExpanded(false); // 외부 클릭 시 슬라이드 축소
+              onExpandChange(false); // 부모에게 축소 상태 전달
+            }
+          };
+
+          document.addEventListener('mousedown', handleClickOutside);
+          document.addEventListener('touchstart', handleClickOutside);
+
+          return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('touchstart', handleClickOutside);
+          };
+
         }
-      };
-
-      document.addEventListener('mousedown', handleClickOutside);
-      document.addEventListener('touchstart', handleClickOutside);
-
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-        document.removeEventListener('touchstart', handleClickOutside);
-      };
-    }, [onExpandChange]);
+    }, [isExpanded]);
 
     // 축소될 때 스크롤 위치를 0으로 복구
     useEffect(() => {
@@ -121,8 +125,10 @@ const ReelsImage = ({ post, onExpandChange  }: Props) => {
           // scrollHeight가 clientHeight보다 크면 내용이 넘치고, 스크롤이 필요함
           if (element.scrollHeight > element.clientHeight) {
             setIsOverflowing(true); // "더보기"를 표시
+           
           } else {
             setIsOverflowing(false); // "더보기" 숨김
+          
           }
         }
       };
