@@ -187,7 +187,7 @@ const ReelsImage = ({ post, onExpandChange  }: Props) => {
                         ref={contentsRef}
                         onClick={handleInsideClick} // 내부 클릭 시 이벤트 전파 차단
                         style={{
-                        maxHeight: isExpanded ? '90vh' : '80vh', // 클릭 시 확장/축소
+                        maxHeight: isExpanded ? '75vh' : '68vh', // 클릭 시 확장/축소
                         overflowY: isExpanded ? 'scroll' : 'hidden', // 스크롤 처리
                         }}
                        
@@ -229,7 +229,7 @@ const ReelsImage = ({ post, onExpandChange  }: Props) => {
                                     color:'#fff',
                                     fontWeight:400,
                                     textAlign:'left',
-                                    maxHeight: isExpanded ? 'none' : '80vh', // 확장 시 제한 없음
+                                    maxHeight: isExpanded ? 'none' : '68vh', // 확장 시 제한 없음
                                 }}>
                                   
                                   {convertNewlineToBreak(post.name)}
