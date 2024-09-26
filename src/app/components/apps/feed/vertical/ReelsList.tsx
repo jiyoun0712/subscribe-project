@@ -27,14 +27,23 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
     const [initialIndex, setInitialIndex] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
     const swiperRef = useRef<SwiperCore | null>(null);
+    const [isExpanded, setIsExpanded] = useState(false); // 확장 상태 관리
+
 
     const [swiping, setSwiping] = useState(false);
     const [translateX, setTranslateX] = useState(0);
 
+    const handleExpandChange = (expanded: boolean) => {
+      console.log(`handleExpandChange!!! ${expanded}`)
+      setIsExpanded(expanded);
+      if (swiperRef.current) {
+        swiperRef.current.allowTouchMove = !expanded; // 확장 상태에 따른 스와이프 설정 변경
+      }
+    };
 
     const swiperHandlers = useSwipeable({
         onSwiping: (eventData) => {
-
+          if (!isExpanded) { // 확장 상태에서는 스와이프 비활성화
             console.log('@1')
             if(eventData.dir === 'Left') {
 
@@ -56,8 +65,10 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
                     
                 }
             }
+          }
         },
         onSwipedLeft:(eventData) => {
+          if (!isExpanded) { // 확장 상태에서는 스와이프 비활성화
             console.log('@3')
             const swiper = swiperRef.current;
             if (swiper) {
@@ -67,6 +78,7 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
                     onSwipeLeft(activeSlide.id, eventData.deltaX);
                 }
             }
+          }
         },
 
         preventScrollOnSwipe: true,
@@ -84,7 +96,7 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
             setLoading(true);
             setTimeout(() => {
             setLoading(false);
-            }, 700); // 추가 로딩 시뮬레이션
+            }, 500); // 추가 로딩 시뮬레이션
         }
     };
 
@@ -140,6 +152,10 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
         className="prayerSwiper"
         onSlideChange={handleSlideChange}
         initialSlide={initialIndex} // id에 해당하는 슬라이드로 초기 이동
+        allowTouchMove={false} // 세로 스와이프 비활성화
+  touchStartPreventDefault={true} // 터치 이벤트 기본 동작 방지
+  simulateTouch={false} // 터치 시뮬레이션 비활성화
+
       >
       {slides.map((photo) => {
 
@@ -147,7 +163,7 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
         <SwiperSlide key={photo.id}>
           <Grid className="slide-content" item sm={12}>
          
-            <ReelsImage post={photo} onSwipeLeft={onSwipeLeft} />
+            <ReelsImage post={photo} onExpandChange={handleExpandChange} />
           </Grid>
         </SwiperSlide>  
         );

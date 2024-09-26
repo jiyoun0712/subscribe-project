@@ -164,8 +164,8 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
               ) : (
                 <div
                 style={{
-                  transition: 'opacity 0.5s ease-in-out', // 트랜지션 적용
-                  opacity: isAnimating ? 0.8 : 1, // 페이드 아웃과 페이드 인 제어
+                  transition: 'max-height 0.5s ease', // 트랜지션 적용
+                 
                 }}
                 >
 
