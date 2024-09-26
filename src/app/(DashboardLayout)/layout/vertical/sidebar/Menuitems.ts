@@ -85,7 +85,7 @@ const Menuitems: MenuitemsType[] = [
   },
   {
     id: uniqueId(),
-    title: "피드",
+    title: "기도 목록",
     icon: IconAperture,
     href: "/apps/feed/vertical",
   },
@@ -103,7 +103,7 @@ const Menuitems: MenuitemsType[] = [
   },
   {
     id: uniqueId(),
-    title: "기도 목록",
+    title: "목록 편집",
     icon: IconNotes,
     href: "/apps/my/prayerlist",
   },

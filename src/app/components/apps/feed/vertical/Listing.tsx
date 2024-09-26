@@ -78,7 +78,7 @@ const GalleryCard = () => {
           <Stack direction="row" alignItems={"center"} mt={2}>
             <Box>
               <Typography variant="h3">
-                피드 &nbsp;
+                기도 목록 &nbsp;
                 <Chip label={getPhotos.length} color="secondary" size="small" />
               </Typography>
             </Box>
@@ -108,53 +108,42 @@ const GalleryCard = () => {
             <Grid item xs={12} lg={4} key={photo.id} 
             >
               <BlankCard className="hoverCard">
-                {isLoading ? (
-                  <>
-                    <Skeleton
-                      variant="rectangular"
-                      animation="wave"
-                      width="100%"
-                      height={220}
-                    ></Skeleton>
-                  </>
-                ) : (
-                  <CardMedia
-                    component={"img"}
-                    height="220"
-                    alt="Remy Sharp"
-                    src={photo.cover}
-                    
-                    style={{ cursor: 'pointer' }} // 클릭 가능하도록 커서 변경
-                    onClick={() => handleCardMediaClick(photo.id)} // CardMedia 클릭 시 다이얼로그 열기
-                  />
-                )}
-                <Box p={3}>
-                  <Stack direction="row" gap={1}>
+               
+               
+
+                
+                
+                <Box key={photo.id} px={2}>
                     <Box
-                    style={{
-                      maxWidth: '100%',  // Box의 최대 너비를 설정
-                      whiteSpace: 'nowrap',   // 텍스트를 한 줄로 유지
-                      overflow: 'hidden',     // 넘치는 텍스트 숨기기
-                     
-                    }}
+                      p={2}
+                      sx={{
+                        position: "relative",
+                        cursor: "pointer",
+                        mt: 2,
+                        mb: 2,
+                        transition: "0.1s ease-in",
+                      /* transform:
+                          activePrayer === index ? "scale(1)" : "scale(0.95)",*/
+                        backgroundColor: `blue.light`,
+                      }}
+                      onClick={() => handleCardMediaClick(photo.id)}
                     >
-                      <Typography variant="h6" style={{
-                     
-                      whiteSpace: 'nowrap',   // 텍스트를 한 줄로 유지
-                      overflow: 'hidden',     // 넘치는 텍스트 숨기기
-                   
-                    }}>{photo.name}</Typography>
-                      <Typography variant="caption">
-                        {format(new Date(photo.time), "E, MMM d, yyyy")}
-                      </Typography>
+                    
+
+                      <div>{photo.name}</div>
+
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Typography variant="caption">
+                          {new Date(photo.time).toLocaleDateString()}
+                        </Typography>
+                        
+                      </Stack>
                     </Box>
-                    <Box ml={"auto"}>
-                      <IconButton>
-                        <IconDotsVertical size="16" />
-                      </IconButton>
-                    </Box>
-                  </Stack>
-                </Box>
+                  </Box>
 
                 {/* <Box>
                   <Stack direction="row" gap={1} alignItems="right" justifyContent="end">
