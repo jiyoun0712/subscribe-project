@@ -78,6 +78,10 @@ const ReelsImage = ({ post, onExpandChange  }: Props) => {
       setIsExpanded(true);
       onExpandChange(true); // 부모에게 확장 상태 전달
     };
+    const handleMoreCloseClick = () => {
+      setIsExpanded(false);
+      onExpandChange(false); // 부모에게 확장 상태 전달
+    };
 
     // 내부 클릭 시 이벤트 전파 차단
     const handleInsideClick = (event: React.MouseEvent) => {
@@ -95,8 +99,9 @@ const ReelsImage = ({ post, onExpandChange  }: Props) => {
             // 클릭된 요소가 contentsRef 내부가 아닌 경우에만 동작
             if (contentsRef.current && !contentsRef.current.contains(event.target as Node)) {
               console.log('Clicked outside the Contents area');
-              setIsExpanded(false); // 외부 클릭 시 슬라이드 축소
-              onExpandChange(false); // 부모에게 축소 상태 전달
+              //setIsExpanded(false); // 외부 클릭 시 슬라이드 축소
+              //onExpandChange(false); // 부모에게 축소 상태 전달
+              handleMoreCloseClick();
             }
           };
 
@@ -234,24 +239,43 @@ const ReelsImage = ({ post, onExpandChange  }: Props) => {
                                   
                                   {convertNewlineToBreak(post.name)}
                                   
-                                    {(!isExpanded && isOverflowing) &&
-                                      <span style={{
-                                          position: 'absolute',
-                                          right:0,
-                                          bottom:'45px',
-                                          fontSize:'14px',
-                                          color:'#fff',
-                                          fontWeight:400,
-                                          flexShrink:0,
-                                          alignSelf:'center',
-                                          backgroundColor: '#000',
-                                          opacity: 0.65,
-                                          padding: '3px 10px 5px 10px',
-                                          borderRadius: '5px',
-                                      }}
-                                      onClick={handleMoreClick}
-                                      >...더보기</span>
-                                    }  
+                                  {(!isExpanded && isOverflowing) &&
+                                    <span style={{
+                                        position: 'absolute',
+                                        right:0,
+                                        bottom:'45px',
+                                        fontSize:'14px',
+                                        color:'#fff',
+                                        fontWeight:400,
+                                        flexShrink:0,
+                                        alignSelf:'center',
+                                        backgroundColor: '#000',
+                                        opacity: 0.65,
+                                        padding: '3px 10px 5px 10px',
+                                        borderRadius: '5px',
+                                    }}
+                                    onClick={handleMoreClick}
+                                    >...더보기</span>
+                                  }
+
+                                  {(isExpanded && isOverflowing) &&
+                                    <span style={{
+                                      position: 'absolute',
+                                      right:0,
+                                      bottom:'40px',
+                                      fontSize:'14px',
+                                      color:'#fff',
+                                      fontWeight:400,
+                                      flexShrink:0,
+                                      alignSelf:'center',
+                                      backgroundColor: '#000',
+                                      opacity: 0.65,
+                                      padding: '3px 10px 5px 10px',
+                                      borderRadius: '5px',
+                                    }}
+                                    onClick={handleMoreCloseClick}
+                                    >닫기</span>
+                                  }
                                   
                                 </span>
                                  
