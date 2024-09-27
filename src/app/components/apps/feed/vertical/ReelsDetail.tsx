@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { usePathname } from "next/navigation";
+
 import {
   Button,
   Dialog,
@@ -32,6 +33,9 @@ interface DetailDialogProps {
 }
 
 const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
+ 
+  
+
   const dispatch = useDispatch();
   const pathName = usePathname();
   const [open, setOpen] = React.useState(false);
@@ -71,7 +75,7 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
       setCurrentIndex(index);
     }
   }, [photos, id]);
-  
+
   // skeleton
   const [isLoading, setLoading] = React.useState(true);
   
