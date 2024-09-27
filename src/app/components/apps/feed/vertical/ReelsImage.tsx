@@ -7,16 +7,13 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
-
 import styled from 'styled-components';
 
-//import { PostTextBox } from './PostTextBox';
 import { GalleryType } from '../../../../(DashboardLayout)/types/apps/gallery';
 
 
 interface Props {
     post: GalleryType;
-
     onExpandChange: (expanded: boolean) => void; // 추가된 prop
 }
 
@@ -42,7 +39,6 @@ const Contents = styled('div')(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
-   
     overflowX: 'hidden',
     minHeight: 0,
     overflowY: 'hidden',
@@ -170,13 +166,11 @@ const ReelsImage = ({ post, onExpandChange  }: Props) => {
                         left: '0',
                         right: '0',
                         top: '0',
-
                         backgroundImage: 'linear-gradient(0deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0.35) 100%)',
                       }}>
                     
                     <div 
-                    
-                    style={{
+                      style={{
                         zIndex:1,
                         position:'absolute',
                         display:'flex',
@@ -195,7 +189,6 @@ const ReelsImage = ({ post, onExpandChange  }: Props) => {
                         maxHeight: isExpanded ? '85dvh' : '68dvh', // 클릭 시 확장/축소
                         overflowY: isExpanded ? 'scroll' : 'hidden', // 스크롤 처리
                         }}
-                       
                         >
                             <div style={{
                                 display:'flex',
@@ -276,10 +269,7 @@ const ReelsImage = ({ post, onExpandChange  }: Props) => {
                                     onClick={handleMoreCloseClick}
                                     >닫기</span>
                                   }
-                                  
                                 </span>
-                                 
-                                  
                             </div>
                         </Contents>
                         <Buttons>

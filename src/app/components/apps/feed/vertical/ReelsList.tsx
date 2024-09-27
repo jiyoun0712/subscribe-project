@@ -5,21 +5,16 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import './styles.css';
 import { useSwipeable } from 'react-swipeable';
-
 import { useSelector, useDispatch } from'@/store/hooks';
 import { fetchPhotos } from '@/store/apps/gallery/GallerySlice';
 import ReelsImage from './ReelsImage';
 
 import { GalleryType } from '../../../../(DashboardLayout)/types/apps/gallery';
 
-
-
-
 interface DetailDialogProps {
     id: number;
     onSwipeLeft: (slideId: number, deltaX: number) => void;
-  }
-
+}
 
 const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
    // const [slides, setSlides] = useState([]);
@@ -29,16 +24,12 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
     const swiperRef = useRef<SwiperCore | null>(null);
     const [isExpanded, setIsExpanded] = useState(false); // 확장 상태 관리
 
-
     const [swiping, setSwiping] = useState(false);
     const [translateX, setTranslateX] = useState(0);
 
     const handleExpandChange = (expanded: boolean) => {
-      console.log(`handleExpandChange!!! ${expanded}`)
       setIsExpanded(expanded);
-     
       if (swiperRef.current) {
-        console.log(`swiperRef!!!`)
         if(expanded){
           swiperRef.current.allowTouchMove = false; // 확장 상태에 따른 스와이프 설정 변경
         }else{
@@ -50,32 +41,21 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
     const swiperHandlers = useSwipeable({
         onSwiping: (eventData) => {
           if (!isExpanded) { // 확장 상태에서는 스와이프 비활성화
-            console.log('@1')
             if(eventData.dir === 'Left') {
-
-                console.log('@2')
                 setSwiping(true);
                 setTranslateX(eventData.deltaX);
 
                 const swiper = swiperRef.current;
                 if (swiper) {
-
-                    console.log('@2---1')
                     const activeIndex = swiper.activeIndex;
-                    console.log(activeIndex)
-                    const activeSlide = slides[activeIndex];
-                  
-                    console.log('@2---2')
-                    console.log(activeSlide)
+                    const activeSlide = slides[activeIndex];                
                     onSwipeLeft(activeSlide.id, eventData.deltaX);
-                    
                 }
             }
           }
         },
         onSwipedLeft:(eventData) => {
           if (!isExpanded) { // 확장 상태에서는 스와이프 비활성화
-            console.log('@3')
             const swiper = swiperRef.current;
             if (swiper) {
                 const activeIndex = swiper.activeIndex;
@@ -86,18 +66,11 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
             }
           }
         },
-
         preventScrollOnSwipe: true,
         trackMouse: true,
     });
 
-   
-  
-
-
-
-    const handleSlideChange = (swiper: SwiperCore) => {
-       
+    const handleSlideChange = (swiper: SwiperCore) => {       
         if (swiper.activeIndex === initialIndex && !loading) {
             setLoading(true);
             setTimeout(() => {
@@ -106,21 +79,17 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
         }
     };
 
-
-
     const dispatch = useDispatch();
-
     useEffect(() => {
         dispatch(fetchPhotos());
     }, [dispatch]);
 
-    const getPhotos: GalleryType[] = useSelector((state) => state.galleryReducer.gallery);
 
+    const getPhotos: GalleryType[] = useSelector((state) => state.galleryReducer.gallery);
     useEffect(() => {
         if (getPhotos.length > 0) {
             console.log(getPhotos)
             setSlides(getPhotos);
-    
         }
     }, [getPhotos]);
 
@@ -129,14 +98,9 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
     useEffect(() => {
         if (slides.length > 0) {
             const index = slides.findIndex((photo) => photo.id === id);
-            console.log('index:::', index);
             setInitialIndex(index !== -1 ? index : 0); // id에 맞는 인덱스가 없으면 0으로 설정
-            
-            
-            console.log('initialIndex:::', initialIndex);
         }
     }, [slides, id]);
-
 
     // const handleSlideChange = (swiper: SwiperCore) => {
     //     if(swiper.activeIndex === id && !loading){
@@ -144,40 +108,35 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
     //     }
     // }
 
-
   return (
     <Grid container >{/*{...swiperHandlers}*/}
-      {initialIndex !== null && slides.length > 0 ? ( // initialIndex가 null이 아닐 때만 렌더링
-      <Swiper
-        onSwiper={(swiper) => {
-            swiperRef.current = swiper; // Swiper 인스턴스 할당
-        }}
-        ref={swiperRef as any}
-        direction={'vertical'}
-        pagination={{ clickable: true }}
-        className="prayerSwiper"
-        onSlideChange={handleSlideChange}
-        initialSlide={initialIndex} // id에 해당하는 슬라이드로 초기 이동
-  
-
-      >
-      {slides.map((photo) => {
-
-        return (
-        <SwiperSlide key={photo.id}>
-          <Grid className="slide-content" item sm={12}>
-         
-            <ReelsImage post={photo} onExpandChange={handleExpandChange} />
-          </Grid>
-        </SwiperSlide>  
-        );
-      })}
-      </Swiper>
-    ) : (
-    <p>Loading...</p> // 로딩 중일 때 표시할 콘텐츠
-    )}
+      { initialIndex !== null && slides.length > 0 ? ( // initialIndex가 null이 아닐 때만 렌더링
+        <Swiper
+          onSwiper={(swiper) => {
+              swiperRef.current = swiper; // Swiper 인스턴스 할당
+          }}
+          ref={swiperRef as any}
+          direction={'vertical'}
+          pagination={{ clickable: true }}
+          className="prayerSwiper"
+          onSlideChange={handleSlideChange}
+          initialSlide={initialIndex} // id에 해당하는 슬라이드로 초기 이동
+        >
+        {slides.map((photo) => {
+          return (
+            <SwiperSlide key={photo.id}>
+              <Grid className="slide-content" item sm={12}>
+            
+                <ReelsImage post={photo} onExpandChange={handleExpandChange} />
+              </Grid>
+            </SwiperSlide>  
+            );
+        })}
+        </Swiper>
+      ) : (
+        <p>Loading...</p> // 로딩 중일 때 표시할 콘텐츠
+      )}
     </Grid>
   );
 };
-
 export default ReelsList;

@@ -64,7 +64,14 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
     setIsOverlayOpen(false);
   };
 
-
+  //현재 id 인덱스를 초기화
+  useEffect(() => {
+    const index = photos.findIndex((photo: GalleryType) => photo.id === id);
+    if(index !== -1){
+      setCurrentIndex(index);
+    }
+  }, [photos, id]);
+  
   // skeleton
   const [isLoading, setLoading] = React.useState(true);
   
@@ -75,15 +82,6 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
 
     return () => clearTimeout(timer);
   }, []);
-
-
-  //현재 id 인덱스를 초기화
-  useEffect(() => {
-    const index = photos.findIndex((photo: GalleryType) => photo.id === id);
-    if(index !== -1){
-      setCurrentIndex(index);
-    }
-  }, [photos, id]);
 
 
 
@@ -115,7 +113,6 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
         </Button>
         <DialogContent dividers={scroll === 'paper'} style={{ touchAction: 'none', padding:0 }}>
           <>
-
               {isLoading ? (
                 <>
                 <Skeleton variant="rectangular" width="100%">

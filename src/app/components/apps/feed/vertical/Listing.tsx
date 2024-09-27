@@ -19,14 +19,21 @@ import { IconDotsVertical, IconSearch } from "@tabler/icons-react";
 import { format } from "date-fns";
 import { GalleryType } from "../../../../(DashboardLayout)/types/apps/gallery";
 
-const GalleryCard = () => {
+// 개행 문자를 <br />로 변환하는 함수
+const convertNewlineToBreak = (text: string) => {
+  return text.split('\n').map((str, index) => (
+    <React.Fragment key={index}>
+      {str}
+      <br />
+    </React.Fragment>
+  ));
+};
+
+
+const Listing = () => {
   const dispatch = useDispatch();
-
-   
-  
   const [openDialogId, setOpenDialogId] = React.useState<number | string | null>(null); // number 또는 string 타입
-
-
+  const [search, setSearch] = React.useState("");
 
 
   const filterPhotos = (photos: GalleryType[], cSearch: string) => {
@@ -38,7 +45,6 @@ const GalleryCard = () => {
     return photos;
   };
 
-  const [search, setSearch] = React.useState("");
   const getPhotos = useSelector((state) =>
     filterPhotos(state.galleryReducer.gallery, search)
   );
@@ -51,10 +57,14 @@ const GalleryCard = () => {
     setOpenDialogId(null); // 다이얼로그 닫기
   };
 
+   
+  useEffect(() => {
+    dispatch(fetchPhotos());
+  }, [dispatch]);
+
 
   // skeleton
   const [isLoading, setLoading] = React.useState(true);
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -63,16 +73,8 @@ const GalleryCard = () => {
     return () => clearTimeout(timer);
   }, []);
 
-
-
-
-    
-  useEffect(() => {
-    dispatch(fetchPhotos());
-  }, [dispatch]);
-
+  
   return (
-    <>
       <Grid container spacing={3}>
         <Grid item sm={12} lg={12}>
           <Stack direction="row" alignItems={"center"} mt={2}>
@@ -105,14 +107,8 @@ const GalleryCard = () => {
         </Grid>
         {getPhotos.map((photo) => {
           return (
-            <Grid item xs={12} lg={4} key={photo.id} 
-            >
+            <Grid item xs={12} lg={4} key={photo.id}>
               <BlankCard className="hoverCard">
-               
-               
-
-                
-                
                 <Box key={photo.id} px={2}>
                     <Box
                       p={2}
@@ -126,49 +122,33 @@ const GalleryCard = () => {
                           activePrayer === index ? "scale(1)" : "scale(0.95)",*/
                         backgroundColor: `blue.light`,
                       }}
-                      onClick={() => handleCardMediaClick(photo.id)}
-                    >
-                    
+                      onClick={() => handleCardMediaClick(photo.id)}>
 
-                      <div>{photo.name}</div>
+                      <div>{convertNewlineToBreak(photo.name)}</div>
 
                       <Stack
                         direction="row"
                         justifyContent="space-between"
-                        alignItems="center"
-                      >
+                        alignItems="center">
                         <Typography variant="caption">
                           {new Date(photo.time).toLocaleDateString()}
                         </Typography>
-                        
                       </Stack>
                     </Box>
                   </Box>
 
-                {/* <Box>
-                  <Stack direction="row" gap={1} alignItems="right" justifyContent="end">
-                    <DetailDialog id={photo.id} />
-                  </Stack>
-                </Box> */}
-
-               {/* 다이얼로그를 조건부 렌더링 */}
-               <>
                 {/* 다이얼로그를 조건부 렌더링 */}
-              {openDialogId === photo.id && (
-                <DetailDialog id={photo.id} onClose={handleDialogClose} />
-              )}
+                <>
+                {openDialogId === photo.id && (
+                  <DetailDialog id={photo.id} onClose={handleDialogClose} />
+                )}
                 </>
               </BlankCard>
             </Grid>
           );
         })}
-
-
-
-
       </Grid>
-    </>
   );
 };
 
-export default GalleryCard;
+export default Listing;
