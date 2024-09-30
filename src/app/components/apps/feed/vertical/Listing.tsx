@@ -47,16 +47,18 @@ const Listing = () => {
   const dispatch = useDispatch();
   const [openDialogId, setOpenDialogId] = React.useState<number | string | null>(null); // number 또는 string 타입
   const [search, setSearch] = React.useState("");
-  const [view, setView] = React.useState('list');
-
   const [viewType, setViewType] = React.useState<'list' | 'grid' | 'full'>('list');
 
-
-
-
   const handleChange = (event: React.MouseEvent<HTMLElement>, nextView: 'list' | 'grid' | 'full') => {
-    setViewType(nextView);
+    if (nextView !== null) {
+      setViewType(nextView);
+      setLoading(true); // 로딩 상태로 변경
+      setTimeout(() => {
+        setLoading(false); // 일정 시간 후 로딩 종료
+      }, 500);
+    };
   };
+
 
   const filterPhotos = (photos: GalleryType[], cSearch: string) => {
     if (photos)
@@ -98,7 +100,7 @@ const Listing = () => {
   
   return (
     
-      <Grid container spacing={3}>
+    <Grid container spacing={3}>
         <Grid item sm={12} lg={12}>
           <Stack direction="row" alignItems={"center"} mt={2}>
             <Box>
@@ -107,72 +109,92 @@ const Listing = () => {
                 <Chip label={getPhotos.length} color="secondary" size="small" />
               </Typography>
             </Box>
-           </Stack>
+          </Stack>
 
 
-           <Stack direction={{ xs: 'row', sm: 'row', lg: 'row' }} alignItems={"center"} mt={2} sx={{ display:'flex', justifyContent:'space-between'}}>
-           
-              <TextField
-                id="outlined-search"
-                placeholder="Search Gallery"
-                size="small"
-                type="search"
-                variant="outlined"
-              
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <IconSearch size="14" />
-                    </InputAdornment>
-                  ),
-                }}
+          <Stack direction={{ xs: 'row', sm: 'row', lg: 'row' }} alignItems={"center"} mt={2} sx={{ display:'flex', justifyContent:'space-between'}}>
+            <TextField
+              id="outlined-search"
+              placeholder="Search Gallery"
+              size="small"
+              type="search"
+              variant="outlined"
+            
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IconSearch size="14" />
+                  </InputAdornment>
+                ),
+              }}
 
-                sx={{
-                  width: lgUp ? "auto" : "100%",
-                 
-                }}
+              sx={{
+                width: lgUp ? "auto" : "100%",
+                
+              }}
 
-                fullWidth
-                onChange={(e) => setSearch(e.target.value)}
-              />
-              
-
-      
-              <ToggleButtonGroup
-                value={viewType}
-                exclusive
-                onChange={handleChange}
-                size="small"
-                sx={{ marginLeft: '16px' }}
-              >
-                <ToggleButton value="list" aria-label="list">
-                  <ListIcon />
-                </ToggleButton>
-                <ToggleButton value="grid" aria-label="grid">
-                  <GridViewIcon />
-                </ToggleButton>
-                <ToggleButton value="full" aria-label="full">
-                  <ViewFullIcon />
-                </ToggleButton>
-              </ToggleButtonGroup>
-          
-           
+              fullWidth
+              onChange={(e) => setSearch(e.target.value)}
+            />
+                    
+            <ToggleButtonGroup
+              value={viewType}
+              exclusive
+              onChange={handleChange}
+              size="small"
+              sx={{ marginLeft: '16px' }}>
+              <ToggleButton value="list" aria-label="list">
+                <ListIcon />
+              </ToggleButton>
+              <ToggleButton value="grid" aria-label="grid">
+                <GridViewIcon />
+              </ToggleButton>
+              <ToggleButton value="full" aria-label="full">
+                <ViewFullIcon />
+              </ToggleButton>
+            </ToggleButtonGroup> 
           </Stack>
         </Grid>
 
+      {isLoading ? (
+        // 로딩 중일 때 스켈레톤 렌더링
+        <>
+        { viewType === 'list' &&
+          <>
+          {[...Array(6)].map((_, index) => (
+            <Grid item xs={12} lg={12} key={index}>
+              <BlankCard className="hoverCard" sx={{ ml: 2, mr: 2 }} >
+              
+                <Skeleton variant="rectangular" width="100%" height={15} sx={{ mt:2, mb:2, ml: 2, mr: 2 }} />
+                <Skeleton variant="rectangular" width="40%" height={15} sx={{ mt:1, mb:2, ml: 2, mr: 2 }} />
+              </BlankCard>
+            </Grid>
+          ))}
+          </>
+        }
+
+        { viewType === 'grid' &&
+          <>
+          {[...Array(6)].map((_, index) => (
+            <Grid item xs={12} lg={4} key={index}>
+              <Skeleton variant="rectangular" width="100%" height={250} />
+            </Grid>
+          ))}
+          </>
+        }
 
 
-    {isLoading ? (
-      // 로딩 중일 때 스켈레톤 렌더링
-      <>
-        {[...Array(6)].map((_, index) => (
-          <Grid item xs={12} lg={12} key={index}>
-            <Skeleton variant="rectangular" width="100%" height={150} />
-          </Grid>
-        ))}
-      </>
-    ) : (
-
+        { viewType === 'full' &&
+          <>
+          {[...Array(6)].map((_, index) => (
+            <Grid item xs={12} lg={12} key={index}>
+              <Skeleton variant="rectangular" width="100%" height={150} />
+            </Grid>
+          ))}
+          </>
+        }
+        </>
+      ) : (
         <>
         {getPhotos.map((photo) => {
           return (
@@ -225,8 +247,6 @@ const Listing = () => {
               </BlankCard>
             </Grid>
             }
-
-
 
             {/* 선택된 타입에 따라 컴포넌트 렌더링 */}
             {viewType === 'grid' &&
@@ -297,54 +317,50 @@ const Listing = () => {
             {/* 선택된 타입에 따라 컴포넌트 렌더링 */}
             {viewType === 'full' &&
             
-                      <Grid item xs={12} lg={12} key={photo.id}>
-                        <BlankCard className="hoverCard">
-                          <Box key={photo.id} px={2}>
-                              <Box
-                                p={2}
-                                sx={{
-                                  position: "relative",
-                                  cursor: "pointer",
-                                  mt: 2,
-                                  mb: 2,
-                                  transition: "0.1s ease-in",
-                                /* transform:
-                                    activePrayer === index ? "scale(1)" : "scale(0.95)",*/
-                                  backgroundColor: `blue.light`,
-                                }}
-                                onClick={() => handleCardMediaClick(photo.id)}>
+              <Grid item xs={12} lg={12} key={photo.id}>
+                <BlankCard className="hoverCard">
+                  <Box key={photo.id} px={2}>
+                      <Box
+                        p={2}
+                        sx={{
+                          position: "relative",
+                          cursor: "pointer",
+                          mt: 2,
+                          mb: 2,
+                          transition: "0.1s ease-in",
+                        /* transform:
+                            activePrayer === index ? "scale(1)" : "scale(0.95)",*/
+                          backgroundColor: `blue.light`,
+                        }}
+                        onClick={() => handleCardMediaClick(photo.id)}>
 
-                                <div>{convertNewlineToBreak(photo.name)}</div>
+                        <div>{convertNewlineToBreak(photo.name)}</div>
 
-                                <Stack
-                                  direction="row"
-                                  justifyContent="space-between"
-                                  alignItems="center">
-                                  <Typography variant="caption">
-                                    {new Date(photo.time).toLocaleDateString()}
-                                  </Typography>
-                                </Stack>
-                              </Box>
-                            </Box>
+                        <Stack
+                          direction="row"
+                          justifyContent="space-between"
+                          alignItems="center">
+                          <Typography variant="caption">
+                            {new Date(photo.time).toLocaleDateString()}
+                          </Typography>
+                        </Stack>
+                      </Box>
+                    </Box>
 
-                          {/* 다이얼로그를 조건부 렌더링 */}
-                          <>
-                          {openDialogId === photo.id && (
-                            <DetailDialog id={photo.id} onClose={handleDialogClose} />
-                          )}
-                          </>
-                        </BlankCard>
-                      </Grid>
+                  {/* 다이얼로그를 조건부 렌더링 */}
+                  <>
+                  {openDialogId === photo.id && (
+                    <DetailDialog id={photo.id} onClose={handleDialogClose} />
+                  )}
+                  </>
+                </BlankCard>
+              </Grid>
             }
             </>
-
           );
         })}
-
       </>
-
-    )}
-
+      )}
 
       </Grid>
   );
