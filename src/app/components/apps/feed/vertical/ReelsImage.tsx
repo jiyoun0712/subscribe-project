@@ -1,13 +1,12 @@
 import React,{ useEffect, useState, useRef } from 'react';
-
-import 'swiper/css';
-import './styles.css';
 import { Box, Grid, Avatar } from '@mui/material';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import styled from 'styled-components';
+import 'swiper/css';
+import './styles.css';
 
 import { GalleryType } from '../../../../(DashboardLayout)/types/apps/gallery';
 

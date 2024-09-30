@@ -37,7 +37,7 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
         }
       }
     };
-
+/*
     const swiperHandlers = useSwipeable({
         onSwiping: (eventData) => {
           if (!isExpanded) { // 확장 상태에서는 스와이프 비활성화
@@ -69,12 +69,14 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
         preventScrollOnSwipe: true,
         trackMouse: true,
     });
-
+*/
     const handleSlideChange = (swiper: SwiperCore) => {       
         if (swiper.activeIndex === initialIndex && !loading) {
             setLoading(true);
+            console.log('handleSlideChange!');
+            
             setTimeout(() => {
-            setLoading(false);
+              setLoading(false);
             }, 500); // 추가 로딩 시뮬레이션
         }
     };
@@ -88,7 +90,7 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
     const getPhotos: GalleryType[] = useSelector((state) => state.galleryReducer.gallery);
     useEffect(() => {
         if (getPhotos.length > 0) {
-            console.log(getPhotos)
+            //console.log(getPhotos)
             setSlides(getPhotos);
         }
     }, [getPhotos]);
@@ -121,6 +123,7 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
           className="prayerSwiper"
           onSlideChange={handleSlideChange}
           initialSlide={initialIndex} // id에 해당하는 슬라이드로 초기 이동
+          speed={360} // 슬라이드 속도 설정 (밀리초 단위, 1초 = 1000ms)
         >
         {slides.map((photo) => {
           return (
