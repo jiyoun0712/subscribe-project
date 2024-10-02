@@ -156,7 +156,7 @@ const Listing = () => {
           </Stack>
         </Grid>
 
-      {isLoading ? (
+      {!isLoading ? (
         // 로딩 중일 때 스켈레톤 렌더링
         <>
         { viewType === 'list' &&
@@ -165,7 +165,7 @@ const Listing = () => {
             <Grid item xs={12} lg={12} key={index}>
               <BlankCard className="hoverCard" sx={{ ml: 2, mr: 2 }} >
               
-                <Skeleton variant="rectangular" width="100%" height={15} sx={{ mt:2, mb:2, ml: 2, mr: 2 }} />
+                <Skeleton variant="rectangular" height={15} sx={{ mt:2, mb:2, ml: 2, mr: 2 }} />
                 <Skeleton variant="rectangular" width="40%" height={15} sx={{ mt:1, mb:2, ml: 2, mr: 2 }} />
               </BlankCard>
             </Grid>
@@ -177,7 +177,7 @@ const Listing = () => {
           <>
           {[...Array(6)].map((_, index) => (
             <Grid item xs={12} lg={4} key={index}>
-              <Skeleton variant="rectangular" width="100%" height={250} />
+              <Skeleton variant="rectangular" height={250} />
             </Grid>
           ))}
           </>
@@ -188,7 +188,7 @@ const Listing = () => {
           <>
           {[...Array(6)].map((_, index) => (
             <Grid item xs={12} lg={12} key={index}>
-              <Skeleton variant="rectangular" width="100%" height={150} />
+              <Skeleton variant="rectangular" height={150} />
             </Grid>
           ))}
           </>
@@ -198,125 +198,119 @@ const Listing = () => {
         <>
         {getPhotos.map((photo) => {
           return (
-
             <>
-
             {/* 선택된 타입에 따라 컴포넌트 렌더링 */}
             {viewType === 'list' &&
-            
-            <Grid item xs={12} lg={12} key={photo.id}>
-              <BlankCard className="hoverCard">
-                <Box key={photo.id} px={2}>
-                    <Box
-                      p={2}
-                      sx={{
-                        position: "relative",
-                        cursor: "pointer",
-                        mt: 2,
-                        mb: 2,
-                        transition: "0.1s ease-in",
-                      /* transform:
-                          activePrayer === index ? "scale(1)" : "scale(0.95)",*/
-                        backgroundColor: `blue.light`,
-                        overflow: "hidden",
-                        whiteSpace: 'nowrap',  // 한 줄로 표시
-                        textOverflow: 'ellipsis' // 넘치는 부분 '...'으로 표시
-                        
-                      }}
-                      onClick={() => handleCardMediaClick(photo.id)}>
+              <Grid item xs={12} lg={12} key={photo.id}>
+                <BlankCard className="hoverCard">
+                  <Box key={photo.id} px={2}>
+                      <Box
+                        p={2}
+                        sx={{
+                          position: "relative",
+                          cursor: "pointer",
+                          mt: 2,
+                          mb: 2,
+                          transition: "0.1s ease-in",
+                        /* transform:
+                            activePrayer === index ? "scale(1)" : "scale(0.95)",*/
+                          backgroundColor: `blue.light`,
+                          overflow: "hidden",
+                          whiteSpace: 'nowrap',  // 한 줄로 표시
+                          textOverflow: 'ellipsis' // 넘치는 부분 '...'으로 표시
+                          
+                        }}
+                        onClick={() => handleCardMediaClick(photo.id)}>
 
-                      <div style={{overflow: "hidden",}}>{photo.name}</div>
+                        <div style={{overflow: "hidden",}}>{photo.name}</div>
 
-                      <Stack
-                        direction="row"
-                        justifyContent="space-between"
-                        alignItems="center">
-                        <Typography variant="caption">
-                          {new Date(photo.time).toLocaleDateString()}
-                        </Typography>
-                      </Stack>
+                        <Stack
+                          direction="row"
+                          justifyContent="space-between"
+                          alignItems="center">
+                          <Typography variant="caption">
+                            {new Date(photo.time).toLocaleDateString()}
+                          </Typography>
+                        </Stack>
+                      </Box>
                     </Box>
-                  </Box>
 
-                {/* 다이얼로그를 조건부 렌더링 */}
-                <>
-                {openDialogId === photo.id && (
-                  <DetailDialog id={photo.id} onClose={handleDialogClose} />
-                )}
-                </>
-              </BlankCard>
-            </Grid>
+                  {/* 다이얼로그를 조건부 렌더링 */}
+                  <>
+                  {openDialogId === photo.id && (
+                    <DetailDialog id={photo.id} onClose={handleDialogClose} />
+                  )}
+                  </>
+                </BlankCard>
+              </Grid>
             }
 
             {/* 선택된 타입에 따라 컴포넌트 렌더링 */}
             {viewType === 'grid' &&
             
-            <Grid item xs={12} lg={4} key={photo.id}>
-              <BlankCard className="hoverCard">
-                <Box key={photo.id} px={2}>
-                    <Box
-                      p={2}
-                      sx={{
-                        position: "relative",
-                        cursor: "pointer",
-                        mt: 2,
-                        mb: 2,
-                        transition: "0.1s ease-in",
-                      /* transform:
-                          activePrayer === index ? "scale(1)" : "scale(0.95)",*/
-                        backgroundColor: `blue.light`,
-                        
-                        height: "250px", // 고정 높이 설정
-                        display: "flex",  // 내용이 중앙에 오도록 설정
-                        flexDirection: "column",
-                        justifyContent: "space-between",
-                        overflow: "hidden",
-                      }}
-                      onClick={() => handleCardMediaClick(photo.id)}>
+              <Grid item xs={12} lg={4} key={photo.id}>
+                <BlankCard className="hoverCard">
+                  <Box key={photo.id} px={2}>
+                      <Box
+                        p={2}
+                        sx={{
+                          position: "relative",
+                          cursor: "pointer",
+                          mt: 2,
+                          mb: 2,
+                          transition: "0.1s ease-in",
+                        /* transform:
+                            activePrayer === index ? "scale(1)" : "scale(0.95)",*/
+                          backgroundColor: `blue.light`,
+                          
+                          height: "250px", // 고정 높이 설정
+                          display: "flex",  // 내용이 중앙에 오도록 설정
+                          flexDirection: "column",
+                          justifyContent: "space-between",
+                          overflow: "hidden",
+                        }}
+                        onClick={() => handleCardMediaClick(photo.id)}>
 
-                      <div 
-                        style={{
-                        position: "relative",
-                        cursor: "pointer",
-                        marginBottom: 10,
-                        transition: "0.1s ease-in",
-                      /* transform:
-                          activePrayer === index ? "scale(1)" : "scale(0.95)",*/
-                        backgroundColor: `blue.light`,
-                        
-                        height: "200px", // 고정 높이 설정
-                        display: "flex",  // 내용이 중앙에 오도록 설정
-                        flexDirection: "column",
-                        justifyContent: "space-between",
-                        overflow: "hidden",
-                      }}>{convertNewlineToBreak(photo.name)}</div>
+                        <div 
+                          style={{
+                          position: "relative",
+                          cursor: "pointer",
+                          marginBottom: 10,
+                          transition: "0.1s ease-in",
+                        /* transform:
+                            activePrayer === index ? "scale(1)" : "scale(0.95)",*/
+                          backgroundColor: `blue.light`,
+                          
+                          height: "200px", // 고정 높이 설정
+                          display: "flex",  // 내용이 중앙에 오도록 설정
+                          flexDirection: "column",
+                          justifyContent: "space-between",
+                          overflow: "hidden",
+                        }}>{convertNewlineToBreak(photo.name)}</div>
 
-                      <Stack
-                        direction="row"
-                        justifyContent="space-between"
-                        alignItems="center">
-                        <Typography variant="caption">
-                          {new Date(photo.time).toLocaleDateString()}
-                        </Typography>
-                      </Stack>
+                        <Stack
+                          direction="row"
+                          justifyContent="space-between"
+                          alignItems="center">
+                          <Typography variant="caption">
+                            {new Date(photo.time).toLocaleDateString()}
+                          </Typography>
+                        </Stack>
+                      </Box>
                     </Box>
-                  </Box>
 
-                {/* 다이얼로그를 조건부 렌더링 */}
-                <>
-                {openDialogId === photo.id && (
-                  <DetailDialog id={photo.id} onClose={handleDialogClose} />
-                )}
-                </>
-              </BlankCard>
-            </Grid>
+                  {/* 다이얼로그를 조건부 렌더링 */}
+                  <>
+                  {openDialogId === photo.id && (
+                    <DetailDialog id={photo.id} onClose={handleDialogClose} />
+                  )}
+                  </>
+                </BlankCard>
+              </Grid>
             }
-
-
 
             {/* 선택된 타입에 따라 컴포넌트 렌더링 */}
             {viewType === 'full' &&
-            
               <Grid item xs={12} lg={12} key={photo.id}>
                 <BlankCard className="hoverCard">
                   <Box key={photo.id} px={2}>
