@@ -156,7 +156,7 @@ const Listing = () => {
           </Stack>
         </Grid>
 
-      {!isLoading ? (
+      {isLoading ? (
         // 로딩 중일 때 스켈레톤 렌더링
         <>
         { viewType === 'list' &&
