@@ -1,7 +1,7 @@
 import Grid from '@mui/material/Grid';
 import { useEffect, useState, useRef } from 'react';
 
-import SwiperCore, { Mousewheel } from 'swiper'; // Mousewheel 모듈 가져오기
+import SwiperCore from 'swiper'; // Mousewheel 모듈 가져오기
 import { Swiper, SwiperSlide  } from 'swiper/react';
 import { usePathname } from "next/navigation";
 import 'swiper/css';
@@ -13,7 +13,7 @@ import { fetchPhotos } from '@/store/apps/gallery/GallerySlice';
 import ReelsImage from '../ReelsImage';
 
 import { GalleryType } from '../../../../../(DashboardLayout)/types/apps/gallery';
-SwiperCore.use([Mousewheel]);
+
 
 const VerticalSwiperLg = () => {
     const pathName = usePathname();
