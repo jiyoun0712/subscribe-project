@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Theme } from '@mui/material/styles';
+import { useRouter  } from "next/navigation";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
 import CardMedia from '@mui/material/CardMedia';
@@ -45,9 +46,11 @@ const convertNewlineToBreak = (text: string) => {
 const Listing = () => {
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   const dispatch = useDispatch();
+  const router = useRouter();
   const [openDialogId, setOpenDialogId] = React.useState<number | string | null>(null); // number 또는 string 타입
   const [search, setSearch] = React.useState("");
   const [viewType, setViewType] = React.useState<'list' | 'grid' | 'full'>('list');
+
 
   const handleChange = (event: React.MouseEvent<HTMLElement>, nextView: 'list' | 'grid' | 'full') => {
     if (nextView !== null) {
@@ -74,7 +77,17 @@ const Listing = () => {
   );
 
   const handleCardMediaClick = (id: number|string) => {
-    setOpenDialogId(id); // 클릭한 사진의 ID로 다이얼로그 열기
+    
+    
+    if (lgUp) {
+      // PC: 세로 스와이프 전환
+      router.push(`/apps/feed/vertical/detail/${id}`);
+    } else {
+      // 모바일: 다이얼로그 창 열기
+      setOpenDialogId(id); // 클릭한 사진의 ID로 다이얼로그 열기
+    }
+
+
   };
 
   const handleDialogClose = () => {
