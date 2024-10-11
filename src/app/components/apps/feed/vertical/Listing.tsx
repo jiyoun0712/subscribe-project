@@ -28,9 +28,19 @@ import DetailDialog from './ReelsDetail';
 import BlankCard from "../../../../components/shared/BlankCard";
 import { useSelector, useDispatch } from "@/store/hooks";
 import { fetchPhotos } from "@/store/apps/gallery/GallerySlice";
+
+import { fetchWelcomeMessage } from "@/store/apps/gallery/GallerySlice";
+
+
 import { IconDotsVertical, IconSearch } from "@tabler/icons-react";
 import { format } from "date-fns";
 import { GalleryType } from "../../../../(DashboardLayout)/types/apps/gallery";
+
+import { WelcomeType } from "../../../../(DashboardLayout)/types/apps/welcome";
+
+
+
+
 
 // 개행 문자를 <br />로 변환하는 함수
 const convertNewlineToBreak = (text: string) => {
@@ -50,6 +60,7 @@ const Listing = () => {
   const [openDialogId, setOpenDialogId] = React.useState<number | string | null>(null); // number 또는 string 타입
   const [search, setSearch] = React.useState("");
   const [viewType, setViewType] = React.useState<'list' | 'grid' | 'full'>('list');
+
 
 
   const handleChange = (event: React.MouseEvent<HTMLElement>, nextView: 'list' | 'grid' | 'full') => {
@@ -72,10 +83,12 @@ const Listing = () => {
     return photos;
   };
 
-  const getPhotos = useSelector((state) =>
-    filterPhotos(state.galleryReducer.gallery, search)
-  );
+  const getPhotos = useSelector((state) => filterPhotos(state.galleryReducer.gallery, search));
 
+
+  const getWelcome  = useSelector((state) => state.galleryReducer.welcomeMessage );
+
+  //const getWelcome = useSelector((state: { galleryReducer: { welcomeMessage: WelcomeType } }) => state.galleryReducer.welcomeMessage);
   const handleCardMediaClick = (id: number|string) => {
     
     
@@ -97,6 +110,7 @@ const Listing = () => {
    
   useEffect(() => {
     dispatch(fetchPhotos());
+    dispatch(fetchWelcomeMessage());
   }, [dispatch]);
 
 
@@ -118,7 +132,7 @@ const Listing = () => {
           <Stack direction="row" alignItems={"center"} mt={2}>
             <Box>
               <Typography variant="h3">
-                기도 목록 &nbsp;
+              {getWelcome?.user_name} 기도 목록 &nbsp;
                 <Chip label={getPhotos.length} color="secondary" size="small" />
               </Typography>
             </Box>

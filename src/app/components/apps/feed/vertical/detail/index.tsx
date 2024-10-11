@@ -1,12 +1,19 @@
 import Grid from '@mui/material/Grid';
 import { useEffect, useState, useRef } from 'react';
-
-import SwiperCore from 'swiper'; // Mousewheel 모듈 가져오기
-import { Swiper, SwiperSlide  } from 'swiper/react';
+import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
-import 'swiper/css';
+import  SwiperCore from 'swiper';
+import { Swiper, SwiperSlide  } from 'swiper/react';
+import { Mousewheel, Navigation } from "swiper/modules";
 import '../styles.css';
-import 'swiper/css/mousewheel'; // Mousewheel 모듈 CSS 추가
+import 'swiper/css';
+import 'swiper/css/mousewheel';
+import 'swiper/css/navigation';
+
+import Fab from '@mui/material/Fab'
+import { IconArrowUp, IconArrowDown } from "@tabler/icons-react";
+
+
 import { useSwipeable } from 'react-swipeable';
 import { useSelector, useDispatch } from'@/store/hooks';
 import { fetchPhotos } from '@/store/apps/gallery/GallerySlice';
@@ -18,6 +25,7 @@ import { GalleryType } from '../../../../../(DashboardLayout)/types/apps/gallery
 const VerticalSwiperLg = () => {
     const pathName = usePathname();
   
+    const router = useRouter();
     //const getTitle: number | any = pathName.split('/').pop();
     const getId: number | any = Number(pathName.split('/').pop());
 
@@ -30,6 +38,26 @@ const VerticalSwiperLg = () => {
 
     const [swiping, setSwiping] = useState(false);
     const [translateX, setTranslateX] = useState(0);
+
+
+    const [currentSlide, setCurrentSlide] = useState(0);
+  
+    const handleNext = () => {
+      //setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+      if (swiperRef.current) {
+        const swiper = swiperRef.current;
+        swiper.slideNext();
+      }
+    };
+  
+    const handlePrev = () => {
+      //setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+      if (swiperRef.current) {
+        const swiper = swiperRef.current;
+        swiper.slidePrev(); // 위로 스크롤하면 이전 슬라이드
+      }
+    };
+
 
     const handleExpandChange = (expanded: boolean) => {
       setIsExpanded(expanded);
@@ -74,7 +102,7 @@ const VerticalSwiperLg = () => {
         trackMouse: true,
     });
 */
-    const handleSlideChange = (swiper: SwiperCore) => {       
+    const handleSlideChange2 = (swiper: SwiperCore) => {       
         if (swiper.activeIndex === initialIndex && !loading) {
             setLoading(true);
             console.log('handleSlideChange!');
@@ -114,8 +142,40 @@ const VerticalSwiperLg = () => {
     //     }
     // }
 
+    const handleSlideChange = (swiper: SwiperCore) => {
+        const activeSlide = slides[swiper.activeIndex];
+        if (activeSlide) {
+          router.replace(`/apps/feed/vertical/detail/${activeSlide.id}`);
+        }
+    };
+    
+    const handleWheelScroll = (event: WheelEvent) => {
+        const swiper = swiperRef.current;
+        if (swiper) {
+          if (event.deltaY > 0) {
+            swiper.slideNext(); // 아래로 스크롤하면 다음 슬라이드
+          } else {
+            swiper.slidePrev(); // 위로 스크롤하면 이전 슬라이드
+          }
+        }
+    }
+    useEffect(() => {
+        const container = document.getElementById('swiper-container');
+        if (container) {
+            container.addEventListener('wheel', handleWheelScroll);
+        }
+
+        return () => {
+            if (container) {
+            container.removeEventListener('wheel', handleWheelScroll);
+            }
+        };
+    }, []);
+
+
+
   return (
-    <Grid container >{/*{...swiperHandlers}*/}
+    <Grid container style={{justifyContent: 'space-between'}}>{/*{...swiperHandlers}*/}
        <Grid item sm={6} lg={6}>
       { initialIndex !== null && slides.length > 0 ? ( // initialIndex가 null이 아닐 때만 렌더링
         <Swiper
@@ -125,17 +185,19 @@ const VerticalSwiperLg = () => {
           ref={swiperRef as any}
           direction={'vertical'}
           pagination={{ clickable: true }}
+          
           className="prayerSwiper"
           onSlideChange={handleSlideChange}
           initialSlide={initialIndex} // id에 해당하는 슬라이드로 초기 이동
           speed={360} // 슬라이드 속도 설정 (밀리초 단위, 1초 = 1000ms)
-          mousewheel={{ forceToAxis: true }} 
+          mousewheel={ false } 
+          modules={[Mousewheel, Navigation]} // 모듈추가
         >
         {slides.map((photo) => {
           return (
             <SwiperSlide key={photo.id}>
               <Grid className="slide-content" item sm={12}>
-            
+              
                 <ReelsImage post={photo} onExpandChange={handleExpandChange} />
               </Grid>
             </SwiperSlide>  
@@ -145,7 +207,27 @@ const VerticalSwiperLg = () => {
       ) : (
         <p>Loading...</p> // 로딩 중일 때 표시할 콘텐츠
       )}
+      
       </Grid>
+
+      <div className="slider-buttons" style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: 20 }}>
+        <Fab
+          color="primary"
+          aria-label="settings"
+          sx={{ right: "0", bottom: "0" , marginBottom: '10px'}}
+          onClick={handlePrev}
+        >
+          <IconArrowUp stroke={1.5} />
+        </Fab>
+        <Fab
+          color="primary"
+          aria-label="settings"
+          sx={{ right: "0", bottom: "0" }}
+          onClick={handleNext}
+        >
+          <IconArrowDown stroke={1.5} />
+        </Fab>
+      </div>
     </Grid>
   );
 };

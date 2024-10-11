@@ -3,13 +3,16 @@ import { Box, Grid, Avatar } from '@mui/material';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
+import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
+import BookmarkAddOutlinedIcon from '@mui/icons-material/BookmarkAddOutlined';
+import BackHandOutlinedIcon from '@mui/icons-material/BackHandOutlined';
 import styled from 'styled-components';
 import 'swiper/css';
 import './styles.css';
 
 import { GalleryType } from '../../../../(DashboardLayout)/types/apps/gallery';
-
+import CommentDialog from './Comment';
 
 interface Props {
     post: GalleryType;
@@ -272,29 +275,21 @@ const ReelsImage = ({ post, onExpandChange  }: Props) => {
                             </div>
                         </Contents>
                         <Buttons>
-                            <div style={{
-                                    display:'flex',
-                                    marginBottom:'30px',
-                                }}>
+                            <div style={{ display:'flex', marginBottom:'30px' }}>
+                            <BackHandOutlinedIcon className="reels-btn-like" />
+                            </div>
+                            <div style={{ display:'flex', marginBottom:'30px' }}>
                             <FavoriteBorderOutlinedIcon className="reels-btn-like" />
                             </div>
-                            <div style={{
-                                    display:'flex',
-                                    marginBottom:'30px',
-                                }}>
+                            {/*<div style={{ display:'flex', marginBottom:'30px'}}>
                             <CommentOutlinedIcon className="reels-btn-comment" />
+                            </div>*/}
+                            <CommentDialog id={post.id} />
+                            <div style={{ display:'flex', marginBottom:'30px' }}>
+                            <BookmarkAddOutlinedIcon className="reels-btn-more" />
                             </div>
-                            <div style={{
-                                    display:'flex',
-                                    marginBottom:'30px',
-                                }}>
-                            <ShareOutlinedIcon className="reels-btn-share" />
-                            </div>
-                            <div style={{
-                                    display:'flex',
-                                    
-                                }}>
-                            <MoreHorizOutlinedIcon className="reels-btn-more" />
+                            <div style={{ display:'flex' }}>
+                            <ReplyOutlinedIcon className="reels-btn-share" />
                             </div>
                         </Buttons>
                     </div>
