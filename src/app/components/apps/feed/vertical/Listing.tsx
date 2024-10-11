@@ -132,7 +132,7 @@ const Listing = () => {
           <Stack direction="row" alignItems={"center"} mt={2}>
             <Box>
               <Typography variant="h3">
-              {getWelcome?.user_name} 기도 목록 &nbsp;
+              기도 목록 &nbsp;
                 <Chip label={getPhotos.length} color="secondary" size="small" />
               </Typography>
             </Box>
