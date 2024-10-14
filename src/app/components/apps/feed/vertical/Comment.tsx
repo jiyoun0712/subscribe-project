@@ -52,12 +52,7 @@ const CommentDialog: React.FC<CommentDialogProps> = ({ id }) => {
   
   const [translateY, setTranslateY] = React.useState(0);
 
-  const [selectedSlideId, setSelectedSlideId] = React.useState<number | null>(null);
-  const [selectedDeltaX, setSelectedDeltaX] = React.useState<number | null>(null);
-  const [isOverlayOpen, setIsOverlayOpen] = React.useState(false);    
  
-  const [currentIndex, setCurrentIndex] = useState<number>(0); // 현재 게시물 인덱스 관리
-  const [isAnimating, setAnimating] = React.useState<boolean>(false); // 애니메이션 상태 관리
 
   const dialogRef = useRef(null);
 
@@ -80,32 +75,40 @@ const CommentDialog: React.FC<CommentDialogProps> = ({ id }) => {
   };
   const handleClose = () => {
     setOpen(false);
+    setTranslateY(0);
   };
 
-  const handleSwipeLeft = (slideId: number, deltaX: number) => {
-    console.log('handleSwipeLeft##')
-    setSelectedSlideId(slideId);
-    setSelectedDeltaX(deltaX);
-    setIsOverlayOpen(true);
-  };
-
-  const handleOverlayClose = () => {
-    setIsOverlayOpen(false);
-  };
 
 
 
   // skeleton
-  const [isLoading, setLoading] = React.useState(true);
+  // const [isLoading, setLoading] = React.useState(true);
   
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 700);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setLoading(false);
+  //   }, 700);
 
-    return () => clearTimeout(timer);
-  }, []);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
+
+  const swipeHandlers = useSwipeable({
+    onSwiping: (eventData) => {
+      if(eventData.dir === 'Down'){
+        setTranslateY(eventData.deltaY);
+      }
+    },
+    onSwipedDown: (eventData) => {
+      if(eventData.velocity > 0.3 || eventData.deltaY > 100) {
+        handleClose();
+      }else{
+        setTranslateY(0);
+      }
+    },
+    //preventDefaultTouchmoveEvent: true,
+    trackMouse: true,
+  })
 
 
   return (
@@ -131,9 +134,9 @@ const CommentDialog: React.FC<CommentDialogProps> = ({ id }) => {
               backgroundColor: 'translate',
               marginTop: '100px',
               height: 'Calc(100%-100px)'
-
           }
         }}
+        {...swipeHandlers}
       >
        
         <DialogContent dividers={scroll === 'paper'} style={{ touchAction: 'none', padding:0 }}>

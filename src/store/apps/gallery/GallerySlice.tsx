@@ -56,7 +56,7 @@ export const fetchPhotos = () => async (dispatch: AppDispatch) => {
 export const fetchWelcomeMessage = () => async (dispatch: AppDispatch) => {
   try {
     const response = await axios.post(`${PRAY_API_URL}`, { task: 'getWelcome' }); // POST 요청
-    dispatch(getWelcomeMessage(response.data.result)); // 상태에 메시지 저장
+    dispatch(getWelcomeMessage(response.data)); // 상태에 메시지 저장
   } catch (err: any) {
     console.error('Error fetching welcome message:', err);
     throw err;

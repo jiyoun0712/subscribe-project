@@ -90,8 +90,6 @@ const Listing = () => {
 
   //const getWelcome = useSelector((state: { galleryReducer: { welcomeMessage: WelcomeType } }) => state.galleryReducer.welcomeMessage);
   const handleCardMediaClick = (id: number|string) => {
-    
-    
     if (lgUp) {
       // PC: 세로 스와이프 전환
       router.push(`/apps/feed/vertical/detail/${id}`);
@@ -99,8 +97,6 @@ const Listing = () => {
       // 모바일: 다이얼로그 창 열기
       setOpenDialogId(id); // 클릭한 사진의 ID로 다이얼로그 열기
     }
-
-
   };
 
   const handleDialogClose = () => {
