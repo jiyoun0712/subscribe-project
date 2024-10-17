@@ -52,7 +52,7 @@ export type ProfileType = {
   };
   
   export type PostType = {
-    p_no?: number;
+    p_no: number;
     
     g_no: number;
     type: string;    

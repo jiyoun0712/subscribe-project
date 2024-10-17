@@ -73,12 +73,14 @@ const Listing = () => {
   const getPosts  = useSelector((state) => filterPosts(state.postReducer.post, search ));
   
   const handleCardMediaClick = (p_no: number) => {
-    if (lgUp) {
-      // PC: 세로 스와이프 전환
-      router.push(`/apps/feed/vertical/detail/${p_no}`);
-    } else {
-      // 모바일: 다이얼로그 창 열기
-      setOpenDialogId(p_no); // 클릭한 사진의 ID로 다이얼로그 열기
+    if (p_no !== undefined) {
+      if (lgUp) {
+        // PC: 세로 스와이프 전환
+        router.push(`/apps/feed/vertical/detail/${p_no}`);
+      } else {
+        // 모바일: 다이얼로그 창 열기
+        setOpenDialogId(p_no); // 클릭한 사진의 ID로 다이얼로그 열기
+      }
     }
   };
 
@@ -89,7 +91,7 @@ const Listing = () => {
    
   useEffect(() => {
     dispatch(fetchPosts());
-   // dispatch(fetchWelcomeMessage());
+   
   }, [dispatch]);
 
 
@@ -239,8 +241,8 @@ const Listing = () => {
                           justifyContent="space-between"
                           alignItems="center">
                           <Typography variant="caption">
+                            {post.r_date}
                             {/* {new Date(post.r_date).toLocaleDateString()} */}
-                            {new Date(post.r_date).toLocaleDateString()}
                           </Typography>
 
                           <Tooltip title="Delete">
@@ -323,7 +325,8 @@ const Listing = () => {
                           justifyContent="space-between"
                           alignItems="center">
                           <Typography variant="caption">
-                            {new Date(post.r_date).toLocaleDateString()}
+                            {post.r_date}
+                            {/* {new Date(post.r_date).toLocaleDateString()} */}
                           </Typography>
                         </Stack>
                       </Box>
@@ -366,7 +369,8 @@ const Listing = () => {
                           justifyContent="space-between"
                           alignItems="center">
                           <Typography variant="caption">
-                            {new Date(post.r_date).toLocaleDateString()}
+                            {post.r_date}
+                            {/* {new Date(post.r_date).toLocaleDateString()} */}
                           </Typography>
                         </Stack>
                       </Box>
