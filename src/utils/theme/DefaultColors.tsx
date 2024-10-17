@@ -35,6 +35,12 @@ const baselightTheme = {
         dark: '#ae8e59',
         contrastText: '#ffffff',
       },
+      white: {
+        main: '#F5F5F5',
+        light: '#FFFFFF',
+        dark: '#EAEFF4',
+        contrastText: '#000000',
+      },
       purple: {
         A50: '#EBF3FE',
         A100: '#6610f2',
@@ -103,6 +109,13 @@ const baselightTheme = {
         light: '#4D3A2A',
         dark: '#ae8e59',
         contrastText: '#ffffff',
+      },
+
+      white: {
+        main: '#F5F5F5',
+        light: '#465670',
+        dark: '#000000',
+        contrastText: '#000000',
       },
       purple: {
         A50: '#EBF3FE',

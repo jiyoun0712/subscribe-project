@@ -11,11 +11,11 @@ import styled from 'styled-components';
 import 'swiper/css';
 import './styles.css';
 
-import { GalleryType } from '../../../../(DashboardLayout)/types/apps/gallery';
+import { PostType } from '../../../../(DashboardLayout)/types/apps/post';
 import CommentDialog from './Comment';
 
 interface Props {
-    post: GalleryType;
+    post: PostType;
     onExpandChange: (expanded: boolean) => void; // 추가된 prop
 }
 
@@ -232,7 +232,7 @@ const ReelsImage = ({ post, onExpandChange  }: Props) => {
                                     maxHeight: isExpanded ? 'none' : '68dvh', // 확장 시 제한 없음
                                 }}>
                                   
-                                  {convertNewlineToBreak(post.name)}
+                                  {convertNewlineToBreak(post.contents)}
                                   
                                   {(!isExpanded && isOverflowing) &&
                                     <span style={{
@@ -284,7 +284,7 @@ const ReelsImage = ({ post, onExpandChange  }: Props) => {
                             {/*<div style={{ display:'flex', marginBottom:'30px'}}>
                             <CommentOutlinedIcon className="reels-btn-comment" />
                             </div>*/}
-                            <CommentDialog id={post.id} />
+                            <CommentDialog p_no={post.p_no} />
                             <div style={{ display:'flex', marginBottom:'30px' }}>
                             <BookmarkAddOutlinedIcon className="reels-btn-more" />
                             </div>

@@ -19,20 +19,20 @@ import Skeleton from '@mui/material/Skeleton';
 import Grid from '@mui/material/Grid';
 import { format } from "date-fns";
 import { useDispatch, useSelector } from "@/store/hooks";
-import { fetchPhotos } from "@/store/apps/gallery/GallerySlice";
+import { fetchPosts } from "@/store/apps/post/PostSlice";
 import { AppState } from "@/store/store";
-import type { GalleryType } from "../../../../(DashboardLayout)/types/apps/gallery";
+import type { PostType } from "../../../../(DashboardLayout)/types/apps/post";
 import { useSwipeable } from 'react-swipeable';
 import ReelsList from './ReelsList';
 import Overlay from './Overlay';
 
 
 interface DetailDialogProps {
-  id: number;
+  p_no: number;
   onClose: () => void; // onClose prop 추가
 }
 
-const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
+const ScrollContentDialog: React.FC<DetailDialogProps> = ({ p_no,  onClose }) => {
  
   
 
@@ -48,7 +48,7 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0); // 현재 게시물 인덱스 관리
   const [isAnimating, setAnimating] = React.useState<boolean>(false); // 애니메이션 상태 관리
 
-  const photos = useSelector((state: AppState) => state.galleryReducer.gallery);
+  const posts = useSelector((state: AppState) => state.postReducer.post);
 
   //const handleOverlayClose = (scrollType: DialogProps['scroll']) => () => {
    // setIsOverlayOpen(false);
@@ -70,11 +70,11 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
 
   //현재 id 인덱스를 초기화
   useEffect(() => {
-    const index = photos.findIndex((photo: GalleryType) => photo.id === id);
+    const index = posts.findIndex((post: PostType) => post.p_no === p_no);
     if(index !== -1){
       setCurrentIndex(index);
     }
-  }, [photos, id]);
+  }, [posts, p_no]);
 
   // skeleton
   const [isLoading, setLoading] = React.useState(true);
@@ -152,8 +152,8 @@ const ScrollContentDialog: React.FC<DetailDialogProps> = ({ id,  onClose }) => {
                 </>
               ) : (
                 <>
-                <ReelsList id={id} onSwipeLeft={handleSwipeLeft} />
-                <Overlay deltaX={selectedDeltaX} slideId={selectedSlideId} isOpen={isOverlayOpen} onClose={handleOverlayClose} />
+                <ReelsList p_no={p_no} onSwipeLeft={handleSwipeLeft} />
+                {/* <Overlay deltaX={selectedDeltaX} slideId={selectedSlideId} isOpen={isOverlayOpen} onClose={handleOverlayClose} /> */}
                 </>
               )}
           </>

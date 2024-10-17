@@ -24,16 +24,16 @@ import { SlideProps } from '@mui/material/Slide';
 
 import { format } from "date-fns";
 import { useDispatch, useSelector } from "@/store/hooks";
-import { fetchPhotos } from "@/store/apps/gallery/GallerySlice";
+import { fetchPosts } from "@/store/apps/post/PostSlice";
 import { AppState } from "@/store/store";
-import type { GalleryType } from "../../../../(DashboardLayout)/types/apps/gallery";
+import { PostType } from "../../../../(DashboardLayout)/types/apps/post";
 import { useSwipeable } from 'react-swipeable';
 import ReelsList from './ReelsList';
 import Overlay from './Overlay';
 
 
 interface CommentDialogProps {
-  id: number;
+  p_no: number;
 }
 
 interface TransitionProps extends SlideProps {}
@@ -44,7 +44,7 @@ const Transition = React.forwardRef<unknown, TransitionProps>(function Transitio
 
 
 
-const CommentDialog: React.FC<CommentDialogProps> = ({ id }) => {
+const CommentDialog: React.FC<CommentDialogProps> = ({ p_no }) => {
   const dispatch = useDispatch();
   const pathName = usePathname();
   const [open, setOpen] = React.useState(false);
@@ -56,13 +56,13 @@ const CommentDialog: React.FC<CommentDialogProps> = ({ id }) => {
 
   const dialogRef = useRef(null);
 
-  const getTitle: number | any = id;
+  const getPno: number = p_no;
 
 
-  const getPhotos = useSelector((state: AppState) => state.galleryReducer.gallery);
+  const getPosts = useSelector((state: AppState) => state.postReducer.post);
 
-  const photo: GalleryType | any = getPhotos.find(
-    (p: GalleryType) => getTitle === p.id
+  const post: PostType = getPosts.find(
+    (p: PostType) => getPno === p.p_no
   );
   //const handleClickOpen = (scrollType: DialogProps['scroll']) => () => {
    // setIsOverlayOpen(false);
@@ -140,7 +140,7 @@ const CommentDialog: React.FC<CommentDialogProps> = ({ id }) => {
       >
        
         <DialogContent dividers={scroll === 'paper'} style={{ touchAction: 'none', padding:0 }}>
-          
+          {post.p_no}
         </DialogContent>
      
       </Dialog>

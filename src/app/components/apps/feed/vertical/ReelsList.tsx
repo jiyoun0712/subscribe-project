@@ -6,19 +6,19 @@ import 'swiper/css';
 import './styles.css';
 import { useSwipeable } from 'react-swipeable';
 import { useSelector, useDispatch } from'@/store/hooks';
-import { fetchPhotos } from '@/store/apps/gallery/GallerySlice';
+import { fetchPosts } from '@/store/apps/post/PostSlice';
 import ReelsImage from './ReelsImage';
 
-import { GalleryType } from '../../../../(DashboardLayout)/types/apps/gallery';
+import { PostType } from '../../../../(DashboardLayout)/types/apps/post';
 
 interface DetailDialogProps {
-    id: number;
+  p_no: number;
     onSwipeLeft: (slideId: number, deltaX: number) => void;
 }
 
-const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
+const ReelsList: React.FC<DetailDialogProps> = ({ p_no, onSwipeLeft }) => {
    // const [slides, setSlides] = useState([]);
-    const [slides, setSlides] = useState<GalleryType[]>([]);
+    const [slides, setSlides] = useState<PostType[]>([]);
     const [initialIndex, setInitialIndex] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
     const swiperRef = useRef<SwiperCore | null>(null);
@@ -83,26 +83,26 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(fetchPhotos());
+        dispatch(fetchPosts());
     }, [dispatch]);
 
 
-    const getPhotos: GalleryType[] = useSelector((state) => state.galleryReducer.gallery);
+    const getPosts: PostType[] = useSelector((state) => state.postReducer.post);
     useEffect(() => {
-        if (getPhotos.length > 0) {
+        if (getPosts.length > 0) {
             //console.log(getPhotos)
-            setSlides(getPhotos);
+            setSlides(getPosts);
         }
-    }, [getPhotos]);
+    }, [getPosts]);
 
   
    // getPhotos가 설정된 후에 initialIndex를 다시 계산
     useEffect(() => {
         if (slides.length > 0) {
-            const index = slides.findIndex((photo) => photo.id === id);
+            const index = slides.findIndex((post) => post.p_no === p_no);
             setInitialIndex(index !== -1 ? index : 0); // id에 맞는 인덱스가 없으면 0으로 설정
         }
-    }, [slides, id]);
+    }, [slides, p_no]);
 
     // const handleSlideChange = (swiper: SwiperCore) => {
     //     if(swiper.activeIndex === id && !loading){
@@ -125,12 +125,12 @@ const ReelsList: React.FC<DetailDialogProps> = ({ id, onSwipeLeft }) => {
           initialSlide={initialIndex} // id에 해당하는 슬라이드로 초기 이동
           speed={360} // 슬라이드 속도 설정 (밀리초 단위, 1초 = 1000ms)
         >
-        {slides.map((photo) => {
+        {slides.map((post) => {
           return (
-            <SwiperSlide key={photo.id}>
+            <SwiperSlide key={post.p_no}>
               <Grid className="slide-content" item sm={12}>
             
-                <ReelsImage post={photo} onExpandChange={handleExpandChange} />
+                <ReelsImage post={post} onExpandChange={handleExpandChange} />
               </Grid>
             </SwiperSlide>  
             );

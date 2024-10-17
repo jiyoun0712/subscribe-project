@@ -76,3 +76,8 @@
     padding: 0 1rem;
     height: 100%;
   }
+
+  .pray-list-container .contents p{
+    margin-top:0;
+    margin-bottom:0;
+  }

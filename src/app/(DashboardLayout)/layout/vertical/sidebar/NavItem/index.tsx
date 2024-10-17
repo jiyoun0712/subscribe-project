@@ -99,13 +99,24 @@ export default function NavItem({
     target: item?.external ? "_blank" : "",
   };
 
+    // '설정' 메뉴일 경우 라우팅을 막고, 다이얼로그만 열리게 설정
+    const handleClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+      if (item.title === '설정') {
+        e.preventDefault(); // 라우팅 방지
+        onClick(e); // 다이얼로그 띄우는 함수 호출
+      }
+    };
+
+
   return (
     <List component="li" disablePadding key={item?.id && item.title}>
-      <Link href={item.href}>
+      
+      {item.title === '설정' ? (
+        // 설정 메뉴인 경우 다이얼로그만 열리도록 설정
         <ListItemStyled
           disabled={item?.disabled}
           selected={pathDirect === item?.href}
-          onClick={lgDown ? onClick : undefined}
+          onClick={handleClick} // 다이얼로그 열기
         >
           <ListItemIcon
             sx={{
@@ -140,7 +151,49 @@ export default function NavItem({
             />
           )}
         </ListItemStyled>
-      </Link>
+      ) : (
+
+        <Link href={item.href}>
+          <ListItemStyled
+            disabled={item?.disabled}
+            selected={pathDirect === item?.href}
+            onClick={lgDown ? onClick : undefined}
+          >
+            <ListItemIcon
+              sx={{
+                minWidth: "36px",
+                p: "3px 0",
+                color:
+                  level > 1 && pathDirect === item?.href
+                    ? `${theme.palette.primary.main}!important`
+                    : "inherit",
+              }}
+            >
+              {itemIcon}
+            </ListItemIcon>
+            <ListItemText>
+              {hideMenu ? "" : t(`${item?.title}`)}
+              <br />
+              {item?.subtitle ? (
+                <Typography variant="caption">
+                  {hideMenu ? "" : item?.subtitle}
+                </Typography>
+              ) : (
+                ""
+              )}
+            </ListItemText>
+
+            {!item?.chip || hideMenu ? null : (
+              <Chip
+                color={item?.chipColor}
+                variant={item?.variant ? item?.variant : "filled"}
+                size="small"
+                label={item?.chip}
+              />
+            )}
+          </ListItemStyled>
+        </Link>
+      )}
     </List>
   );
 }

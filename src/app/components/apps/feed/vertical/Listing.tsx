@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import { Theme } from '@mui/material/styles';
 import { useRouter  } from "next/navigation";
+import parse from 'html-react-parser';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
 import CardMedia from '@mui/material/CardMedia';
 import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
+import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Skeleton from '@mui/material/Skeleton';
@@ -13,7 +15,7 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-
+import { IconTrash } from "@tabler/icons-react";
 import ListIcon from '@mui/icons-material/List';
 import GridViewIcon from '@mui/icons-material/GridView';
 //import GridViewCompactIcon from '@mui/icons-material/AppsRounded';
@@ -27,37 +29,21 @@ import DetailDialog from './ReelsDetail';
 
 import BlankCard from "../../../../components/shared/BlankCard";
 import { useSelector, useDispatch } from "@/store/hooks";
-import { fetchPhotos } from "@/store/apps/gallery/GallerySlice";
-
-import { fetchWelcomeMessage } from "@/store/apps/gallery/GallerySlice";
-
+import { fetchPosts, deletePost } from "@/store/apps/post/PostSlice";
 
 import { IconDotsVertical, IconSearch } from "@tabler/icons-react";
 import { format } from "date-fns";
-import { GalleryType } from "../../../../(DashboardLayout)/types/apps/gallery";
-
-import { WelcomeType } from "../../../../(DashboardLayout)/types/apps/welcome";
-
+import { PostType } from "../../../../(DashboardLayout)/types/apps/post";
+import * as FC from '@/utils/common';
 
 
-
-
-// 개행 문자를 <br />로 변환하는 함수
-const convertNewlineToBreak = (text: string) => {
-  return text.split('\n').map((str, index) => (
-    <React.Fragment key={index}>
-      {str}
-      <br />
-    </React.Fragment>
-  ));
-};
 
 
 const Listing = () => {
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   const dispatch = useDispatch();
   const router = useRouter();
-  const [openDialogId, setOpenDialogId] = React.useState<number | string | null>(null); // number 또는 string 타입
+  const [openDialogId, setOpenDialogId] = React.useState<number>(0); // number
   const [search, setSearch] = React.useState("");
   const [viewType, setViewType] = React.useState<'list' | 'grid' | 'full'>('list');
 
@@ -74,39 +60,36 @@ const Listing = () => {
   };
 
 
-  const filterPhotos = (photos: GalleryType[], cSearch: string) => {
-    if (photos)
-      return photos.filter((t) =>
-        t.name.toLocaleLowerCase().includes(cSearch.toLocaleLowerCase())
-      );
+  const filterPosts = (posts: PostType[], cSearch: string) => {
+    if (posts)
+       return posts.filter((t) =>
+         t.contents.toLocaleLowerCase().includes(cSearch.toLocaleLowerCase())
+       );
 
-    return photos;
+     return posts;
   };
 
-  const getPhotos = useSelector((state) => filterPhotos(state.galleryReducer.gallery, search));
 
-
-  const getWelcome  = useSelector((state) => state.galleryReducer.welcomeMessage );
-
-  //const getWelcome = useSelector((state: { galleryReducer: { welcomeMessage: WelcomeType } }) => state.galleryReducer.welcomeMessage);
-  const handleCardMediaClick = (id: number|string) => {
+  const getPosts  = useSelector((state) => filterPosts(state.postReducer.post, search ));
+  
+  const handleCardMediaClick = (p_no: number) => {
     if (lgUp) {
       // PC: 세로 스와이프 전환
-      router.push(`/apps/feed/vertical/detail/${id}`);
+      router.push(`/apps/feed/vertical/detail/${p_no}`);
     } else {
       // 모바일: 다이얼로그 창 열기
-      setOpenDialogId(id); // 클릭한 사진의 ID로 다이얼로그 열기
+      setOpenDialogId(p_no); // 클릭한 사진의 ID로 다이얼로그 열기
     }
   };
 
   const handleDialogClose = () => {
-    setOpenDialogId(null); // 다이얼로그 닫기
+    setOpenDialogId(0); // 다이얼로그 닫기
   };
 
    
   useEffect(() => {
-    dispatch(fetchPhotos());
-    dispatch(fetchWelcomeMessage());
+    dispatch(fetchPosts());
+   // dispatch(fetchWelcomeMessage());
   }, [dispatch]);
 
 
@@ -123,13 +106,13 @@ const Listing = () => {
   
   return (
     
-    <Grid container spacing={3}>
+    <Grid container spacing={3} className="pray-list-container">
         <Grid item sm={12} lg={12}>
           <Stack direction="row" alignItems={"center"} mt={2}>
             <Box>
               <Typography variant="h3">
               기도 목록 &nbsp;
-                <Chip label={getPhotos.length} color="secondary" size="small" />
+                <Chip label={getPosts.length} color="secondary" size="small" />
               </Typography>
             </Box>
           </Stack>
@@ -219,49 +202,70 @@ const Listing = () => {
         </>
       ) : (
         <>
-        {getPhotos.map((photo) => {
+        {getPosts.map((post) => {
           return (
             <>
             {/* 선택된 타입에 따라 컴포넌트 렌더링 */}
             {viewType === 'list' &&
-              <Grid item xs={12} lg={12} key={photo.id}>
+              <Grid item xs={12} lg={12}>
                 <BlankCard className="hoverCard">
-                  <Box key={photo.id} px={2}>
+                  <Box>
                       <Box
                         p={2}
+                        px={3}
                         sx={{
                           position: "relative",
                           cursor: "pointer",
-                          mt: 2,
-                          mb: 2,
+                          mt: 0,
+                          mb: 0,
                           transition: "0.1s ease-in",
                         /* transform:
                             activePrayer === index ? "scale(1)" : "scale(0.95)",*/
-                          backgroundColor: `blue.light`,
+                          //backgroundColor: `blue.light`,
+                          backgroundColor: `${post.color}.light`,
                           overflow: "hidden",
-                          whiteSpace: 'nowrap',  // 한 줄로 표시
-                          textOverflow: 'ellipsis' // 넘치는 부분 '...'으로 표시
+                          whiteSpace: 'nowrap', 
+                          textOverflow: 'ellipsis', 
                           
                         }}
-                        onClick={() => handleCardMediaClick(photo.id)}>
+                        >
 
-                        <div style={{overflow: "hidden",}}>{photo.name}</div>
+                        <div key={post.p_no} 
+                          className="contents" 
+                          style={{overflow: "hidden", maxHeight: '2.85rem'}} onClick={() => handleCardMediaClick(post.p_no)}>{parse(post.contents)}</div>
 
                         <Stack
                           direction="row"
                           justifyContent="space-between"
                           alignItems="center">
                           <Typography variant="caption">
-                            {new Date(photo.time).toLocaleDateString()}
+                            {/* {new Date(post.r_date).toLocaleDateString()} */}
+                            {new Date(post.r_date).toLocaleDateString()}
                           </Typography>
+
+                          <Tooltip title="Delete">
+                            <IconButton
+                              aria-label="delete"
+                              size="small"
+                              onClick={() => dispatch(deletePost(post.p_no))}
+                            >
+                              <IconTrash width={18} />
+                            </IconButton>
+                          </Tooltip>
+
                         </Stack>
+
+
+
+
+
                       </Box>
                     </Box>
 
                   {/* 다이얼로그를 조건부 렌더링 */}
                   <>
-                  {openDialogId === photo.id && (
-                    <DetailDialog id={photo.id} onClose={handleDialogClose} />
+                  {openDialogId === post.p_no && (
+                    <DetailDialog p_no={post.p_no} onClose={handleDialogClose} />
                   )}
                   </>
                 </BlankCard>
@@ -271,20 +275,21 @@ const Listing = () => {
             {/* 선택된 타입에 따라 컴포넌트 렌더링 */}
             {viewType === 'grid' &&
             
-              <Grid item xs={12} lg={4} key={photo.id}>
+              <Grid item xs={12} lg={4}>
                 <BlankCard className="hoverCard">
-                  <Box key={photo.id} px={2}>
+                  <Box>
                       <Box
                         p={2}
+                        px={3}
                         sx={{
                           position: "relative",
                           cursor: "pointer",
-                          mt: 2,
-                          mb: 2,
+                          mt: 0,
+                          mb: 0,
                           transition: "0.1s ease-in",
                         /* transform:
                             activePrayer === index ? "scale(1)" : "scale(0.95)",*/
-                          backgroundColor: `blue.light`,
+                          backgroundColor: `${post.color}.light`,
                           
                           height: "250px", // 고정 높이 설정
                           display: "flex",  // 내용이 중앙에 오도록 설정
@@ -292,9 +297,11 @@ const Listing = () => {
                           justifyContent: "space-between",
                           overflow: "hidden",
                         }}
-                        onClick={() => handleCardMediaClick(photo.id)}>
+                       >
 
-                        <div 
+                        <div  
+                          key={post.p_no}
+                          className="contents"
                           style={{
                           position: "relative",
                           cursor: "pointer",
@@ -307,16 +314,16 @@ const Listing = () => {
                           height: "200px", // 고정 높이 설정
                           display: "flex",  // 내용이 중앙에 오도록 설정
                           flexDirection: "column",
-                          justifyContent: "space-between",
                           overflow: "hidden",
-                        }}>{convertNewlineToBreak(photo.name)}</div>
+                          }} 
+                          onClick={() => handleCardMediaClick(post.p_no)}>{parse(post.contents)}</div>
 
                         <Stack
                           direction="row"
                           justifyContent="space-between"
                           alignItems="center">
                           <Typography variant="caption">
-                            {new Date(photo.time).toLocaleDateString()}
+                            {new Date(post.r_date).toLocaleDateString()}
                           </Typography>
                         </Stack>
                       </Box>
@@ -324,8 +331,8 @@ const Listing = () => {
 
                   {/* 다이얼로그를 조건부 렌더링 */}
                   <>
-                  {openDialogId === photo.id && (
-                    <DetailDialog id={photo.id} onClose={handleDialogClose} />
+                  {openDialogId === post.p_no && (
+                    <DetailDialog p_no={post.p_no} onClose={handleDialogClose} />
                   )}
                   </>
                 </BlankCard>
@@ -334,31 +341,32 @@ const Listing = () => {
 
             {/* 선택된 타입에 따라 컴포넌트 렌더링 */}
             {viewType === 'full' &&
-              <Grid item xs={12} lg={12} key={photo.id}>
+              <Grid item xs={12} lg={12} key={post.p_no}>
                 <BlankCard className="hoverCard">
-                  <Box key={photo.id} px={2}>
+                  <Box key={post.p_no}>
                       <Box
                         p={2}
+                        px={3}
                         sx={{
                           position: "relative",
                           cursor: "pointer",
-                          mt: 2,
-                          mb: 2,
+                          mt: 0,
+                          mb: 0,
                           transition: "0.1s ease-in",
                         /* transform:
                             activePrayer === index ? "scale(1)" : "scale(0.95)",*/
-                          backgroundColor: `blue.light`,
+                          backgroundColor: `${post.color}.light`,
                         }}
-                        onClick={() => handleCardMediaClick(photo.id)}>
+                        >
 
-                        <div>{convertNewlineToBreak(photo.name)}</div>
+                        <div className="contents" onClick={() => handleCardMediaClick(post.p_no)}>{parse(post.contents)}</div>
 
                         <Stack
                           direction="row"
                           justifyContent="space-between"
                           alignItems="center">
                           <Typography variant="caption">
-                            {new Date(photo.time).toLocaleDateString()}
+                            {new Date(post.r_date).toLocaleDateString()}
                           </Typography>
                         </Stack>
                       </Box>
@@ -366,8 +374,8 @@ const Listing = () => {
 
                   {/* 다이얼로그를 조건부 렌더링 */}
                   <>
-                  {openDialogId === photo.id && (
-                    <DetailDialog id={photo.id} onClose={handleDialogClose} />
+                  {openDialogId === post.p_no && (
+                    <DetailDialog p_no={post.p_no} onClose={handleDialogClose} />
                   )}
                   </>
                 </BlankCard>

@@ -5,7 +5,8 @@ import { styled, useTheme } from "@mui/material/styles";
 import React, { useState } from "react";
 import Header from "./layout/vertical/header/Header";
 import Sidebar from "./layout/vertical/sidebar/Sidebar";
-import Customizer from "./layout/shared/customizer/Customizer";
+//import Customizer from "./layout/shared/customizer/Customizer";
+import CreatePost from "./layout/shared/create/CreatePost";
 import Navigation from "./layout/horizontal/navbar/Navigation";
 import HorizontalHeader from "./layout/horizontal/header/Header";
 import { useSelector } from "@/store/hooks";
@@ -89,7 +90,8 @@ export default function RootLayout({
           {/* End Page */}
           {/* ------------------------------------------- */}
         </Container>
-        <Customizer />
+        {/* <Customizer /> */}
+        <CreatePost />
       </PageWrapper>
     </MainWrapper>
   );
