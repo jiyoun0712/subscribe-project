@@ -15,7 +15,7 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-import { IconTrash } from "@tabler/icons-react";
+import { IconTrash, IconEdit } from "@tabler/icons-react";
 import ListIcon from '@mui/icons-material/List';
 import GridViewIcon from '@mui/icons-material/GridView';
 //import GridViewCompactIcon from '@mui/icons-material/AppsRounded';
@@ -29,25 +29,35 @@ import DetailDialog from './ReelsDetail';
 
 import BlankCard from "../../../../components/shared/BlankCard";
 import { useSelector, useDispatch } from "@/store/hooks";
-import { fetchPosts, deletePost } from "@/store/apps/post/PostSlice";
+import { fetchPosts, deletePost, SelectPost } from "@/store/apps/post/PostSlice";
 
 import { IconDotsVertical, IconSearch } from "@tabler/icons-react";
 import { format } from "date-fns";
 import { PostType } from "../../../../(DashboardLayout)/types/apps/post";
 import * as FC from '@/utils/common';
+import UpdatePostDialog from "./UpdatePost";
 
 
 
 
 const Listing = () => {
+  
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   const dispatch = useDispatch();
   const router = useRouter();
   const [openDialogId, setOpenDialogId] = React.useState<number>(0); // number
+  const [openEdit, setOpenEdit] = React.useState(false); // 수정 다이얼로그 상태 관리
   const [search, setSearch] = React.useState("");
   const [viewType, setViewType] = React.useState<'list' | 'grid' | 'full'>('list');
 
 
+  const handleOpenEdit = () => {
+    setOpenEdit(true);
+  };
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+  };
 
   const handleChange = (event: React.MouseEvent<HTMLElement>, nextView: 'list' | 'grid' | 'full') => {
     if (nextView !== null) {
@@ -58,20 +68,7 @@ const Listing = () => {
       }, 500);
     };
   };
-
-
-  const filterPosts = (posts: PostType[], cSearch: string) => {
-    if (posts)
-       return posts.filter((t) =>
-         t.contents.toLocaleLowerCase().includes(cSearch.toLocaleLowerCase())
-       );
-
-     return posts;
-  };
-
-
-  const getPosts  = useSelector((state) => filterPosts(state.postReducer.post, search ));
-  
+ 
   const handleCardMediaClick = (p_no: number) => {
     if (p_no !== undefined) {
       if (lgUp) {
@@ -104,7 +101,19 @@ const Listing = () => {
 
     return () => clearTimeout(timer);
   }, []);
+  
+  const filterPosts = (posts: PostType[], cSearch: string) => {
+    if (posts)
+       return posts.filter((t) =>
+         t.contents.toLocaleLowerCase().includes(cSearch.toLocaleLowerCase())
+       );
 
+     return posts;
+  };
+
+
+  const getPosts  = useSelector((state) => filterPosts(state.postReducer.post, search ));
+  const active = useSelector((state) => state.postReducer.postContent);
   
   return (
     
@@ -245,6 +254,21 @@ const Listing = () => {
                             {/* {new Date(post.r_date).toLocaleDateString()} */}
                           </Typography>
 
+                          <div>
+                          <Tooltip title="Edit">
+                            <IconButton
+                              aria-label="edit"
+                              size="small"
+                              // onClick={() => handleOpenSettings(post.p_no)}
+                              onClick={() => {
+                                dispatch(SelectPost(post.p_no));
+                                handleOpenEdit();
+                              }}
+                            >
+                              <IconEdit width={18} />
+                            </IconButton>
+                          </Tooltip>
+
                           <Tooltip title="Delete">
                             <IconButton
                               aria-label="delete"
@@ -254,21 +278,22 @@ const Listing = () => {
                               <IconTrash width={18} />
                             </IconButton>
                           </Tooltip>
+                          </div>
 
                         </Stack>
-
-
-
-
-
                       </Box>
                     </Box>
 
                   {/* 다이얼로그를 조건부 렌더링 */}
                   <>
-                  {openDialogId === post.p_no && (
-                    <DetailDialog p_no={post.p_no} onClose={handleDialogClose} />
+                  {post.p_no === openDialogId && (
+                      <DetailDialog p_no={post.p_no} onClose={handleDialogClose} />
                   )}
+
+
+                  {post.p_no === active &&
+                      <UpdatePostDialog open={openEdit} onClose={handleCloseEdit} /> 
+                  }
                   </>
                 </BlankCard>
               </Grid>
@@ -381,6 +406,10 @@ const Listing = () => {
                   {openDialogId === post.p_no && (
                     <DetailDialog p_no={post.p_no} onClose={handleDialogClose} />
                   )}
+
+
+                  
+                  
                   </>
                 </BlankCard>
               </Grid>
@@ -390,7 +419,7 @@ const Listing = () => {
         })}
       </>
       )}
-
+      
       </Grid>
   );
 };
