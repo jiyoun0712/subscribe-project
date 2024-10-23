@@ -1,3 +1,4 @@
+import React from 'react';
 /**
  * HTML 태그를 유지하면서 텍스트를 100자 이내로 자르는 함수
  * @param {string} content - HTML 컨텐츠
