@@ -61,6 +61,7 @@ const CommentDialog: React.FC<CommentDialogProps> = ({ p_no }) => {
 
   const getPosts = useSelector((state: AppState) => state.postReducer.post);
 
+
   const post: PostType = getPosts.find(
     (p: PostType) => getPno === p.p_no
   );

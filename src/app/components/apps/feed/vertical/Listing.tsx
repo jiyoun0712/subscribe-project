@@ -213,211 +213,122 @@ const Listing = () => {
         </>
       ) : (
         <>
+        
+        
         {getPosts.map((post) => {
-          return (
-            <>
-            {/* 선택된 타입에 따라 컴포넌트 렌더링 */}
-            {viewType === 'list' &&
-              <Grid item xs={12} lg={12}>
-                <BlankCard className="hoverCard">
-                  <Box>
-                      <Box
-                        p={2}
-                        px={3}
-                        sx={{
-                          position: "relative",
-                          cursor: "pointer",
-                          mt: 0,
-                          mb: 0,
-                          transition: "0.1s ease-in",
-                        /* transform:
-                            activePrayer === index ? "scale(1)" : "scale(0.95)",*/
-                          //backgroundColor: `blue.light`,
-                          backgroundColor: `${post.color}.light`,
-                          overflow: "hidden",
-                          whiteSpace: 'nowrap', 
-                          textOverflow: 'ellipsis', 
-                          
-                        }}
-                        >
+  
+  const handleRenderCard = () => {
+    const contentHeight = viewType === 'list' 
+      ? '2.85rem' 
+      : viewType === 'grid' 
+      ? '190px' 
+      : ''; // viewType === 'full'일 경우 빈 문자열
+    const gridHeight = viewType === 'list' 
+    ? '' 
+    : viewType === 'grid' 
+    ? '260px' 
+    : ''; 
 
-                        <div key={post.p_no} 
-                          className="contents" 
-                          style={{overflow: "hidden", maxHeight: '2.85rem'}} onClick={() => handleCardMediaClick(post.p_no)}>{parse(post.contents)}</div>
+    return (
+    <BlankCard className="hoverCard">
+      <Box>
+        <Box
+          p={2}
+          px={3}
+          sx={{
+            position: "relative",
+            cursor: "pointer",
+            mt: 0,
+            mb: 0,
+            transition: "0.1s ease-in",
+            backgroundColor: `${post.color}.light`,
+            overflow: "hidden",
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            maxHeight: gridHeight,
+          }}
+        >
+          <div
+            className="contents"
+            style={{ overflow: "hidden", height: contentHeight }}
+            onClick={() => handleCardMediaClick(post.p_no)}
+          >
+            {parse(post.contents)}
+          </div>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography variant="caption">
+              {post.r_date}
+            </Typography>
+            <div>
+              <Tooltip title="Edit">
+                <IconButton
+                  aria-label="edit"
+                  size="small"
+                  onClick={() => {
+                    dispatch(SelectPost(post.p_no));
+                    handleOpenEdit();
+                  }}
+                >
+                  <IconEdit width={18} />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Delete">
+                <IconButton
+                  aria-label="delete"
+                  size="small"
+                  onClick={() => dispatch(deletePost(post.p_no))}
+                >
+                  <IconTrash width={18} />
+                </IconButton>
+              </Tooltip>
+            </div>
+          </Stack>
+        </Box>
+      </Box>
 
-                        <Stack
-                          direction="row"
-                          justifyContent="space-between"
-                          alignItems="center">
-                          <Typography variant="caption">
-                            {post.r_date}
-                            {/* {new Date(post.r_date).toLocaleDateString()} */}
-                          </Typography>
-
-                          <div>
-                          <Tooltip title="Edit">
-                            <IconButton
-                              aria-label="edit"
-                              size="small"
-                              // onClick={() => handleOpenSettings(post.p_no)}
-                              onClick={() => {
-                                dispatch(SelectPost(post.p_no));
-                                handleOpenEdit();
-                              }}
-                            >
-                              <IconEdit width={18} />
-                            </IconButton>
-                          </Tooltip>
-
-                          <Tooltip title="Delete">
-                            <IconButton
-                              aria-label="delete"
-                              size="small"
-                              onClick={() => dispatch(deletePost(post.p_no))}
-                            >
-                              <IconTrash width={18} />
-                            </IconButton>
-                          </Tooltip>
-                          </div>
-
-                        </Stack>
-                      </Box>
-                    </Box>
-
-                  {/* 다이얼로그를 조건부 렌더링 */}
-                  <>
-                  {post.p_no === openDialogId && (
-                      <DetailDialog p_no={post.p_no} onClose={handleDialogClose} />
-                  )}
-
-
-                  {post.p_no === active &&
-                      <UpdatePostDialog open={openEdit} onClose={handleCloseEdit} /> 
-                  }
-                  </>
-                </BlankCard>
-              </Grid>
-            }
-
-            {/* 선택된 타입에 따라 컴포넌트 렌더링 */}
-            {viewType === 'grid' &&
-            
-              <Grid item xs={12} lg={4}>
-                <BlankCard className="hoverCard">
-                  <Box>
-                      <Box
-                        p={2}
-                        px={3}
-                        sx={{
-                          position: "relative",
-                          cursor: "pointer",
-                          mt: 0,
-                          mb: 0,
-                          transition: "0.1s ease-in",
-                        /* transform:
-                            activePrayer === index ? "scale(1)" : "scale(0.95)",*/
-                          backgroundColor: `${post.color}.light`,
-                          
-                          height: "250px", // 고정 높이 설정
-                          display: "flex",  // 내용이 중앙에 오도록 설정
-                          flexDirection: "column",
-                          justifyContent: "space-between",
-                          overflow: "hidden",
-                        }}
-                       >
-
-                        <div  
-                          key={post.p_no}
-                          className="contents"
-                          style={{
-                          position: "relative",
-                          cursor: "pointer",
-                          marginBottom: 10,
-                          transition: "0.1s ease-in",
-                        /* transform:
-                            activePrayer === index ? "scale(1)" : "scale(0.95)",*/
-                          backgroundColor: `blue.light`,
-                          
-                          height: "200px", // 고정 높이 설정
-                          display: "flex",  // 내용이 중앙에 오도록 설정
-                          flexDirection: "column",
-                          overflow: "hidden",
-                          }} 
-                          onClick={() => handleCardMediaClick(post.p_no)}>{parse(post.contents)}</div>
-
-                        <Stack
-                          direction="row"
-                          justifyContent="space-between"
-                          alignItems="center">
-                          <Typography variant="caption">
-                            {post.r_date}
-                            {/* {new Date(post.r_date).toLocaleDateString()} */}
-                          </Typography>
-                        </Stack>
-                      </Box>
-                    </Box>
-
-                  {/* 다이얼로그를 조건부 렌더링 */}
-                  <>
-                  {openDialogId === post.p_no && (
-                    <DetailDialog p_no={post.p_no} onClose={handleDialogClose} />
-                  )}
-                  </>
-                </BlankCard>
-              </Grid>
-            }
-
-            {/* 선택된 타입에 따라 컴포넌트 렌더링 */}
-            {viewType === 'full' &&
-              <Grid item xs={12} lg={12} key={post.p_no}>
-                <BlankCard className="hoverCard">
-                  <Box key={post.p_no}>
-                      <Box
-                        p={2}
-                        px={3}
-                        sx={{
-                          position: "relative",
-                          cursor: "pointer",
-                          mt: 0,
-                          mb: 0,
-                          transition: "0.1s ease-in",
-                        /* transform:
-                            activePrayer === index ? "scale(1)" : "scale(0.95)",*/
-                          backgroundColor: `${post.color}.light`,
-                        }}
-                        >
-
-                        <div className="contents" onClick={() => handleCardMediaClick(post.p_no)}>{parse(post.contents)}</div>
-
-                        <Stack
-                          direction="row"
-                          justifyContent="space-between"
-                          alignItems="center">
-                          <Typography variant="caption">
-                            {post.r_date}
-                            {/* {new Date(post.r_date).toLocaleDateString()} */}
-                          </Typography>
-                        </Stack>
-                      </Box>
-                    </Box>
-
-                  {/* 다이얼로그를 조건부 렌더링 */}
-                  <>
-                  {openDialogId === post.p_no && (
-                    <DetailDialog p_no={post.p_no} onClose={handleDialogClose} />
-                  )}
-
-
-                  
-                  
-                  </>
-                </BlankCard>
-              </Grid>
-            }
-            </>
-          );
-        })}
+      <>
+      {post.p_no === openDialogId && (
+        <DetailDialog p_no={post.p_no} onClose={handleDialogClose} />
+      )}
       </>
+
+      <>
+      {post.p_no === active && (
+        <UpdatePostDialog open={openEdit} onClose={handleCloseEdit} />
+      )}
+      </>
+
+    </BlankCard>
+    );
+  };
+
+  return (
+    <>
+      {viewType === 'list' && (
+        <Grid item xs={12} lg={12} key={post.p_no}>
+          {handleRenderCard()}
+        </Grid>
+      )}
+      {viewType === 'grid' && (
+        <Grid item xs={12} lg={4} key={post.p_no}>
+          {handleRenderCard()}
+        </Grid>
+      )}
+      {viewType === 'full' && (
+        <Grid item xs={12} lg={12} key={post.p_no}>
+          {handleRenderCard()}
+        </Grid>
+      )}
+    </>
+  );
+})}
+
+        
+        </>
       )}
       
       </Grid>

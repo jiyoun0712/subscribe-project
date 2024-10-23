@@ -1,4 +1,5 @@
 import React,{ useEffect, useState, useRef } from 'react';
+import parse from 'html-react-parser';
 import { Box, Grid, Avatar } from '@mui/material';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
@@ -20,17 +21,8 @@ interface Props {
 }
 
 
-// 개행 문자를 <br />로 변환하는 함수
-const convertNewlineToBreak = (text: string) => {
-    return text.split('\n').map((str, index) => (
-      <React.Fragment key={index}>
-        {str}
-        <br />
-      </React.Fragment>
-    ));
-  };
 
-const Image = styled('img')(({ theme}) => ({
+const Image = styled('img')(({ theme }) => ({
     width: '100%',
     height: '100%',
     objectFit: 'cover',
@@ -232,7 +224,7 @@ const ReelsImage = ({ post, onExpandChange  }: Props) => {
                                     maxHeight: isExpanded ? 'none' : '68dvh', // 확장 시 제한 없음
                                 }}>
                                   
-                                  {convertNewlineToBreak(post.contents)}
+                                  {parse(post.contents)}
                                   
                                   {(!isExpanded && isOverflowing) &&
                                     <span style={{

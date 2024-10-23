@@ -1,8 +1,5 @@
 import React from "react";
-
 import Link from "next/link";
-
-// mui imports
 import Chip from '@mui/material/Chip';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -15,8 +12,6 @@ import { styled, useTheme } from '@mui/material/styles';
 import { useSelector } from "@/store/hooks";
 import { useTranslation } from "react-i18next";
 import { AppState } from "@/store/store";
-
-
 
 type NavGroup = {
   [x: string]: any;

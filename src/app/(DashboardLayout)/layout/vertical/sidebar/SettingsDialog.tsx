@@ -1,34 +1,5 @@
-// import React, { useState } from 'react';
-// import Dialog from '@mui/material/Dialog';
-// import DialogActions from '@mui/material/DialogActions';
-// import DialogContent from '@mui/material/DialogContent';
-// import DialogContentText from '@mui/material/DialogContentText';
-// import DialogTitle from '@mui/material/DialogTitle';
-// import Button from '@mui/material/Button';
-
-// const SettingsDialog = ({ open, handleClose }: { open: boolean, handleClose: () => void }) => {
-//   return (
-//     <Dialog open={open} onClose={handleClose}>
-//       <DialogTitle>설정</DialogTitle>
-//       <DialogContent>
-//         <DialogContentText>
-//           설정 페이지 내용을 여기에 추가하세요.
-//         </DialogContentText>
-//       </DialogContent>
-//       <DialogActions>
-//         <Button onClick={handleClose}>닫기</Button>
-//       </DialogActions>
-//     </Dialog>
-//   );
-// };
-
-// export default SettingsDialog;
-
-
-import { FC, useState } from "react";
 import Divider from '@mui/material/Divider'
 import Drawer from '@mui/material/Drawer'
-import Fab from '@mui/material/Fab'
 import Grid from '@mui/material/Grid'
 import IconButton from '@mui/material/IconButton'
 import Slider from '@mui/material/Slider'
@@ -38,7 +9,7 @@ import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
 import { useSelector, useDispatch } from "@/store/hooks";
 import Box, { BoxProps } from "@mui/material/Box";
-import { IconX, IconSettings, IconCheck } from "@tabler/icons-react";
+import { IconX, IconCheck } from "@tabler/icons-react";
 import {
   setTheme,
   setDarkMode,
@@ -62,11 +33,8 @@ interface colors {
 
 
 const SettingsDialog = ({ open, handleClose }: { open: boolean, handleClose: () => void }) => {
-//
   const customizer = useSelector((state: AppState) => state.customizer);
-
   const dispatch = useDispatch();
-
   const StyledBox = styled(Box)<BoxProps>(({ theme }) => ({
     boxShadow: theme.shadows[8],
     padding: "20px",
@@ -115,15 +83,9 @@ const SettingsDialog = ({ open, handleClose }: { open: boolean, handleClose: () 
 
   return (
     <div>
-      {/* ------------------------------------------- */}
-      {/* --Floating Button to open customizer ------ */}
-      {/* ------------------------------------------- */}
-     
       <Drawer
         anchor="right"
         open={open}
-
-
         onClose={handleClose}
         PaperProps={{
           sx: {
@@ -131,9 +93,6 @@ const SettingsDialog = ({ open, handleClose }: { open: boolean, handleClose: () 
           },
         }}
       >
-        {/* ------------------------------------------- */}
-        {/* ------------ Customizer Sidebar ------------- */}
-        {/* ------------------------------------------- */}
         <Scrollbar sx={{ height: "calc(100vh - 5px)" }}>
           <Box
             p={2}

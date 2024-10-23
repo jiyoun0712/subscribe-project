@@ -5,42 +5,28 @@ import { usePathname } from "next/navigation";
 import  SwiperCore from 'swiper';
 import { Swiper, SwiperSlide  } from 'swiper/react';
 import { Mousewheel, Navigation } from "swiper/modules";
+import Fab from '@mui/material/Fab'
+import { IconArrowUp, IconArrowDown } from "@tabler/icons-react";
+import { useSelector, useDispatch } from'@/store/hooks';
+import { fetchPosts } from '@/store/apps/post/PostSlice';
+import { PostType } from '../../../../../(DashboardLayout)/types/apps/post';
+import ReelsImage from '../ReelsImage';
 import '../styles.css';
 import 'swiper/css';
 import 'swiper/css/mousewheel';
 import 'swiper/css/navigation';
 
-import Fab from '@mui/material/Fab'
-import { IconArrowUp, IconArrowDown } from "@tabler/icons-react";
-
-
-import { useSwipeable } from 'react-swipeable';
-import { useSelector, useDispatch } from'@/store/hooks';
-import { fetchPhotos } from '@/store/apps/gallery/GallerySlice';
-import ReelsImage from '../ReelsImage';
-
-import { GalleryType } from '../../../../../(DashboardLayout)/types/apps/gallery';
-
-
 const VerticalSwiperLg = () => {
     const pathName = usePathname();
-  
     const router = useRouter();
-    //const getTitle: number | any = pathName.split('/').pop();
-    const getId: number | any = Number(pathName.split('/').pop());
+    const getId: number = Number(pathName.split('/').pop());
 
-   // const [slides, setSlides] = useState([]);
-    const [slides, setSlides] = useState<GalleryType[]>([]);
+    const [slides, setSlides] = useState<PostType[]>([]);
     const [initialIndex, setInitialIndex] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
     const swiperRef = useRef<SwiperCore | null>(null);
     const [isExpanded, setIsExpanded] = useState(false); // 확장 상태 관리
 
-    const [swiping, setSwiping] = useState(false);
-    const [translateX, setTranslateX] = useState(0);
-
-
-    const [currentSlide, setCurrentSlide] = useState(0);
   
     const handleNext = () => {
       //setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
@@ -69,83 +55,35 @@ const VerticalSwiperLg = () => {
         }
       }
     };
-/*
-    const swiperHandlers = useSwipeable({
-        onSwiping: (eventData) => {
-          if (!isExpanded) { // 확장 상태에서는 스와이프 비활성화
-            if(eventData.dir === 'Left') {
-                setSwiping(true);
-                setTranslateX(eventData.deltaX);
-
-                const swiper = swiperRef.current;
-                if (swiper) {
-                    const activeIndex = swiper.activeIndex;
-                    const activeSlide = slides[activeIndex];                
-                    onSwipeLeft(activeSlide.id, eventData.deltaX);
-                }
-            }
-          }
-        },
-        onSwipedLeft:(eventData) => {
-          if (!isExpanded) { // 확장 상태에서는 스와이프 비활성화
-            const swiper = swiperRef.current;
-            if (swiper) {
-                const activeIndex = swiper.activeIndex;
-                const activeSlide = slides[activeIndex];
-                if (activeSlide) {
-                    onSwipeLeft(activeSlide.id, eventData.deltaX);
-                }
-            }
-          }
-        },
-        preventScrollOnSwipe: true,
-        trackMouse: true,
-    });
-*/
-    const handleSlideChange2 = (swiper: SwiperCore) => {       
-        if (swiper.activeIndex === initialIndex && !loading) {
-            setLoading(true);
-            console.log('handleSlideChange!');
-            
-            setTimeout(() => {
-              setLoading(false);
-            }, 500); // 추가 로딩 시뮬레이션
-        }
-    };
 
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(fetchPhotos());
+        dispatch(fetchPosts());
     }, [dispatch]);
 
 
-    const getPhotos: GalleryType[] = useSelector((state) => state.galleryReducer.gallery);
+    const getPosts: PostType[] = useSelector((state) => state.postReducer.post);
     useEffect(() => {
-        if (getPhotos.length > 0) {
+        if (getPosts.length > 0) {
             //console.log(getPhotos)
-            setSlides(getPhotos);
+            setSlides(getPosts);
         }
-    }, [getPhotos]);
+    }, [getPosts]);
 
   
    // getPhotos가 설정된 후에 initialIndex를 다시 계산
     useEffect(() => {
         if (slides.length > 0) {
-            const index = slides.findIndex((photo) => photo.id === getId);
+            const index = slides.findIndex((post) => post.p_no === getId);
             setInitialIndex(index !== -1 ? index : 0); // id에 맞는 인덱스가 없으면 0으로 설정
         }
     }, [slides, getId]);
 
-    // const handleSlideChange = (swiper: SwiperCore) => {
-    //     if(swiper.activeIndex === id && !loading){
-    //         setPage((prevPage) => prevPage + 1);
-    //     }
-    // }
-
+  
     const handleSlideChange = (swiper: SwiperCore) => {
         const activeSlide = slides[swiper.activeIndex];
         if (activeSlide) {
-          router.replace(`/apps/feed/vertical/detail/${activeSlide.id}`);
+          router.replace(`/apps/feed/vertical/detail/${activeSlide.p_no}`);
         }
     };
     
@@ -164,7 +102,6 @@ const VerticalSwiperLg = () => {
         if (container) {
             container.addEventListener('wheel', handleWheelScroll);
         }
-
         return () => {
             if (container) {
             container.removeEventListener('wheel', handleWheelScroll);
@@ -173,9 +110,8 @@ const VerticalSwiperLg = () => {
     }, []);
 
 
-
   return (
-    <Grid container style={{justifyContent: 'space-between'}}>{/*{...swiperHandlers}*/}
+    <Grid container style={{flexDirection: 'row', justifyContent: 'center'}}>{/*{...swiperHandlers}*/}
        <Grid item sm={6} lg={6}>
       { initialIndex !== null && slides.length > 0 ? ( // initialIndex가 null이 아닐 때만 렌더링
         <Swiper
@@ -193,12 +129,12 @@ const VerticalSwiperLg = () => {
           mousewheel={ false } 
           modules={[Mousewheel, Navigation]} // 모듈추가
         >
-        {slides.map((photo) => {
+        {slides.map((post) => {
           return (
-            <SwiperSlide key={photo.id}>
+            <SwiperSlide key={post.p_no}>
               <Grid className="slide-content" item sm={12}>
               
-                <ReelsImage post={photo} onExpandChange={handleExpandChange} />
+                <ReelsImage post={post} onExpandChange={handleExpandChange} />
               </Grid>
             </SwiperSlide>  
             );
@@ -212,7 +148,6 @@ const VerticalSwiperLg = () => {
 
       <div className="slider-buttons" style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: 20 }}>
         <Fab
-          color="primary"
           aria-label="settings"
           sx={{ right: "0", bottom: "0" , marginBottom: '10px'}}
           onClick={handlePrev}
@@ -220,7 +155,6 @@ const VerticalSwiperLg = () => {
           <IconArrowUp stroke={1.5} />
         </Fab>
         <Fab
-          color="primary"
           aria-label="settings"
           sx={{ right: "0", bottom: "0" }}
           onClick={handleNext}
