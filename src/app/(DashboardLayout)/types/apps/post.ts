@@ -29,10 +29,11 @@ export type ProfileType = {
     data: CommentDataType;
   };
   
-  export type Comment = {
-    id: string | number;
-    profile: ProfileType;
-    data?: CommentDataType;
+  export type CommentType = {
+    cm_no: number;
+    p_no: number;
+    // profile: ProfileType;
+    contents: string;
   };
   
 
@@ -48,7 +49,7 @@ export type ProfileType = {
     images: PostImageType[];
     video?: string;
     likes: Likes;
-    comments?: Comment[];
+    comments?: CommentType[];
   };
   
   export type PostType = {
@@ -70,6 +71,6 @@ export type ProfileType = {
     likes: Likes;
     profile: ProfileType;
     images: PostImageType[];
-    comment: Comment[];
+    comments: number;
   };
   

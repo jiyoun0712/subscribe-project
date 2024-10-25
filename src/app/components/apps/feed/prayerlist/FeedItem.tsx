@@ -222,7 +222,15 @@ const PostItem = ({ post }: Props) => {
                 post?.data && post?.data.likes && post?.data.likes.like ? 'error' : 'inherit'
               }
               onClick={() => handleLike(post?.id)}>
-              <IconFavoriteBorder />
+         
+
+              { post?.data && post?.data.likes && post?.data.likes.like ? (
+                  <IconFavorite sx={{ color: '#ff0000' }} />
+              ):(
+                <IconFavoriteBorder />
+              )}
+
+
             </IconButton>
           </motion.div>
           <Typography variant="body1" fontWeight={600}>

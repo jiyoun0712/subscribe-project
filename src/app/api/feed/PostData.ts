@@ -32,7 +32,7 @@ const posts: PostType[] = [
         },
       ],
       likes: {
-        like: true,
+        like: false,
         value: 67,
       },
       comments: [

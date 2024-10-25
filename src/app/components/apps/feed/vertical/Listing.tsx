@@ -215,7 +215,7 @@ const Listing = () => {
         <>
         
         
-        {getPosts.map((post) => {
+{getPosts.map((post) => {
   
   const handleRenderCard = () => {
     const contentHeight = viewType === 'list' 

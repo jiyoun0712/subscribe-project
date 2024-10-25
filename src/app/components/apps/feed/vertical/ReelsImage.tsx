@@ -2,6 +2,8 @@ import React,{ useEffect, useState, useRef } from 'react';
 import parse from 'html-react-parser';
 import { Box, Grid, Avatar } from '@mui/material';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
@@ -13,7 +15,10 @@ import 'swiper/css';
 import './styles.css';
 
 import { PostType } from '../../../../(DashboardLayout)/types/apps/post';
-import CommentDialog from './Comment';
+import { useDispatch } from "@/store/hooks";
+import { actionLike } from "@/store/apps/post/PostSlice";
+
+import CommentDialog from './CommentDialog';
 
 interface Props {
     post: PostType;
@@ -54,7 +59,7 @@ const Buttons = styled('div')(({ theme }) => ({
 }))  
 
 const ReelsImage = ({ post, onExpandChange  }: Props) => {
-    
+    const dispatch = useDispatch();
     const contentsRef = useRef<HTMLDivElement>(null); // 콘텐츠 영역에 대한 ref
     const containerRef = useRef<HTMLDivElement>(null); // 외부 영역 감지 ref
 
@@ -133,6 +138,11 @@ const ReelsImage = ({ post, onExpandChange  }: Props) => {
     }, []); // 필요 시 상태 변수 추가 가능
   
 
+    const liked = post.likes.like;
+
+    const handleLikeClick = () => {
+      dispatch(actionLike(post.p_no, !liked, 'post'));  // 좋아요 추가/취소
+    };
 
   return (
     <Grid container
@@ -208,7 +218,7 @@ const ReelsImage = ({ post, onExpandChange  }: Props) => {
                                     color:'#fff',
                                     fontWeight:400,
                                     marginLeft:10,
-                                }}>{'베드로'}</span>
+                                }}>{post.profile.group_name}</span>
                             </div>
                             <div style={{
                                     marginRight:10,
@@ -267,21 +277,30 @@ const ReelsImage = ({ post, onExpandChange  }: Props) => {
                             </div>
                         </Contents>
                         <Buttons>
-                            <div style={{ display:'flex', marginBottom:'30px' }}>
-                            <BackHandOutlinedIcon className="reels-btn-like" />
+                            <div style={{ display:'flex', marginBottom:'26px', flexDirection: 'column' }}>
+                              <BackHandOutlinedIcon className="reels-btn-like" />
+                              <span style={{display:'block', fontSize:'12px', color:'#fff', fontWeight:400, height:'18px'}}></span>
                             </div>
-                            <div style={{ display:'flex', marginBottom:'30px' }}>
-                            <FavoriteBorderOutlinedIcon className="reels-btn-like" />
+                            
+                            <div style={{ display:'flex', marginBottom:'26px', flexDirection: 'column' }} onClick={handleLikeClick}>
+                              {liked ? (
+                                <FavoriteIcon style={{ color: 'red' }} />
+                              ) : (
+                                <FavoriteBorderOutlinedIcon className="reels-btn-like" />
+                              )}
+                              <span style={{display:'block', fontSize:'12px', color:'#fff', fontWeight:400, height:'18px'}}>{post.likes.value}</span>
                             </div>
-                            {/*<div style={{ display:'flex', marginBottom:'30px'}}>
-                            <CommentOutlinedIcon className="reels-btn-comment" />
-                            </div>*/}
-                            <CommentDialog p_no={post.p_no} />
-                            <div style={{ display:'flex', marginBottom:'30px' }}>
-                            <BookmarkAddOutlinedIcon className="reels-btn-more" />
+                    
+                            <CommentDialog p_no={post.p_no} comments={post.comments} />
+                            
+                            <div style={{ display:'flex', marginBottom:'26px', flexDirection: 'column' }}>
+                              <BookmarkAddOutlinedIcon className="reels-btn-more" />
+                              <span style={{display:'block', fontSize:'12px', color:'#fff', fontWeight:400, height:'18px'}}></span>
                             </div>
+                            
                             <div style={{ display:'flex' }}>
-                            <ReplyOutlinedIcon className="reels-btn-share" />
+                              <ReplyOutlinedIcon className="reels-btn-share" />
+                              
                             </div>
                         </Buttons>
                     </div>
